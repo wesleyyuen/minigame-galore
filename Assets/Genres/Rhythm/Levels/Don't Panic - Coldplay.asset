@@ -1,0 +1,616 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee708d060c60a342b078d7b6f7883ad, type: 3}
+  m_Name: Don't Panic - Coldplay
+  m_EditorClassIdentifier: 
+  Song: {fileID: 8300000, guid: 986f4e82801c706449d67fe528f2b39d, type: 3}
+  CoverArt: {fileID: 0}
+  BPM: 122
+  RollingDuration: 1
+  Beats:
+  - Column: 2
+    Beat: 3.5
+    Lyrics: 
+  - Column: 0
+    Beat: 5.5
+    Lyrics: 
+  - Column: 2
+    Beat: 7.5
+    Lyrics: 
+  - Column: 0
+    Beat: 9.5
+    Lyrics: 
+  - Column: 2
+    Beat: 11.5
+    Lyrics: 
+  - Column: 0
+    Beat: 13.5
+    Lyrics: 
+  - Column: 2
+    Beat: 15.5
+    Lyrics: 
+  - Column: 1
+    Beat: 18
+    Lyrics: bones
+  - Column: 1
+    Beat: 19.5
+    Lyrics: sin-
+  - Column: 1
+    Beat: 20.5
+    Lyrics: -king
+  - Column: 1
+    Beat: 21
+    Lyrics: like
+  - Column: 1
+    Beat: 22
+    Lyrics: stones
+  - Column: 1
+    Beat: 23.5
+    Lyrics: all
+  - Column: 1
+    Beat: 24.5
+    Lyrics: that
+  - Column: 1
+    Beat: 25
+    Lyrics: we
+  - Column: 1
+    Beat: 26
+    Lyrics: fought
+  - Column: 1
+    Beat: 27.5
+    Lyrics: for
+  - Column: 1
+    Beat: 34
+    Lyrics: homes
+  - Column: 1
+    Beat: 35.5
+    Lyrics: pla-
+  - Column: 1
+    Beat: 36.5
+    Lyrics: -ces
+  - Column: 1
+    Beat: 37
+    Lyrics: we've
+  - Column: 1
+    Beat: 38
+    Lyrics: grown
+  - Column: 1
+    Beat: 39.5
+    Lyrics: all
+  - Column: 1
+    Beat: 40.5
+    Lyrics: of
+  - Column: 1
+    Beat: 41
+    Lyrics: us
+  - Column: 1
+    Beat: 41.5
+    Lyrics: are
+  - Column: 1
+    Beat: 42
+    Lyrics: done
+  - Column: 1
+    Beat: 43.5
+    Lyrics: for
+  - Column: 1
+    Beat: 51
+    Lyrics: we
+  - Column: 1
+    Beat: 52
+    Lyrics: live
+  - Column: 1
+    Beat: 53
+    Lyrics: in
+  - Column: 1
+    Beat: 53.5
+    Lyrics: a
+  - Column: 1
+    Beat: 54
+    Lyrics: beau-
+  - Column: 1
+    Beat: 54.5
+    Lyrics: -ti-
+  - Column: 1
+    Beat: 55
+    Lyrics: -ful
+  - Column: 1
+    Beat: 55.5
+    Lyrics: wo-
+  - Column: 1
+    Beat: 56.5
+    Lyrics: -r-
+  - Column: 1
+    Beat: 57
+    Lyrics: -ld
+  - Column: 1
+    Beat: 62.5
+    Lyrics: yeah
+  - Column: 1
+    Beat: 63
+    Lyrics: we
+  - Column: 1
+    Beat: 63.5
+    Lyrics: do
+  - Column: 1
+    Beat: 64.5
+    Lyrics: yeah
+  - Column: 1
+    Beat: 65
+    Lyrics: we
+  - Column: 1
+    Beat: 65.5
+    Lyrics: do
+  - Column: 1
+    Beat: 67.5
+    Lyrics: we
+  - Column: 1
+    Beat: 68
+    Lyrics: live
+  - Column: 1
+    Beat: 69
+    Lyrics: in
+  - Column: 1
+    Beat: 69.5
+    Lyrics: a
+  - Column: 1
+    Beat: 70
+    Lyrics: beau-
+  - Column: 1
+    Beat: 70.5
+    Lyrics: -ti-
+  - Column: 1
+    Beat: 71
+    Lyrics: -ful
+  - Column: 1
+    Beat: 71.5
+    Lyrics: wo-
+  - Column: 1
+    Beat: 72.5
+    Lyrics: -r-
+  - Column: 1
+    Beat: 73
+    Lyrics: -ld
+  - Column: 1
+    Beat: 82
+    Lyrics: bones
+  - Column: 1
+    Beat: 83.5
+    Lyrics: sin-
+  - Column: 1
+    Beat: 84.5
+    Lyrics: -king
+  - Column: 1
+    Beat: 85
+    Lyrics: like
+  - Column: 1
+    Beat: 86
+    Lyrics: stones
+  - Column: 1
+    Beat: 87.5
+    Lyrics: all
+  - Column: 1
+    Beat: 88.5
+    Lyrics: that
+  - Column: 1
+    Beat: 89
+    Lyrics: we
+  - Column: 1
+    Beat: 90
+    Lyrics: fought
+  - Column: 1
+    Beat: 91.5
+    Lyrics: for
+  - Column: 1
+    Beat: 98
+    Lyrics: homes
+  - Column: 1
+    Beat: 99.5
+    Lyrics: pla-
+  - Column: 1
+    Beat: 100.5
+    Lyrics: -ces
+  - Column: 1
+    Beat: 101
+    Lyrics: we've
+  - Column: 1
+    Beat: 102
+    Lyrics: grown
+  - Column: 1
+    Beat: 103.5
+    Lyrics: all
+  - Column: 1
+    Beat: 104.5
+    Lyrics: of
+  - Column: 1
+    Beat: 105
+    Lyrics: us
+  - Column: 1
+    Beat: 105.5
+    Lyrics: are
+  - Column: 1
+    Beat: 106
+    Lyrics: done
+  - Column: 1
+    Beat: 107.5
+    Lyrics: for
+  - Column: 1
+    Beat: 115
+    Lyrics: we
+  - Column: 1
+    Beat: 116
+    Lyrics: live
+  - Column: 1
+    Beat: 117
+    Lyrics: in
+  - Column: 1
+    Beat: 117.5
+    Lyrics: a
+  - Column: 1
+    Beat: 118
+    Lyrics: beau-
+  - Column: 1
+    Beat: 118.5
+    Lyrics: -ti-
+  - Column: 1
+    Beat: 119
+    Lyrics: -ful
+  - Column: 1
+    Beat: 119.5
+    Lyrics: wo-
+  - Column: 1
+    Beat: 120.5
+    Lyrics: -r-
+  - Column: 1
+    Beat: 121
+    Lyrics: -ld
+  - Column: 1
+    Beat: 126.5
+    Lyrics: yeah
+  - Column: 1
+    Beat: 127
+    Lyrics: we
+  - Column: 1
+    Beat: 127.5
+    Lyrics: do
+  - Column: 1
+    Beat: 128.5
+    Lyrics: yeah
+  - Column: 1
+    Beat: 129
+    Lyrics: we
+  - Column: 1
+    Beat: 129.5
+    Lyrics: do
+  - Column: 1
+    Beat: 131.5
+    Lyrics: we
+  - Column: 1
+    Beat: 132
+    Lyrics: live
+  - Column: 1
+    Beat: 133
+    Lyrics: in
+  - Column: 1
+    Beat: 133.5
+    Lyrics: a
+  - Column: 1
+    Beat: 134
+    Lyrics: beau-
+  - Column: 1
+    Beat: 134.5
+    Lyrics: -ti-
+  - Column: 1
+    Beat: 135
+    Lyrics: -ful
+  - Column: 1
+    Beat: 135.5
+    Lyrics: wo-
+  - Column: 1
+    Beat: 136.5
+    Lyrics: -r-
+  - Column: 1
+    Beat: 137
+    Lyrics: -ld
+  - Column: 0
+    Beat: 146
+    Lyrics: 
+  - Column: 2
+    Beat: 147.5
+    Lyrics: 
+  - Column: 0
+    Beat: 148.5
+    Lyrics: 
+  - Column: 2
+    Beat: 149
+    Lyrics: 
+  - Column: 0
+    Beat: 150
+    Lyrics: 
+  - Column: 2
+    Beat: 151.5
+    Lyrics: 
+  - Column: 0
+    Beat: 152.5
+    Lyrics: 
+  - Column: 2
+    Beat: 153
+    Lyrics: 
+  - Column: 0
+    Beat: 154
+    Lyrics: 
+  - Column: 2
+    Beat: 155.5
+    Lyrics: 
+  - Column: 2
+    Beat: 162
+    Lyrics: 
+  - Column: 0
+    Beat: 163.5
+    Lyrics: 
+  - Column: 2
+    Beat: 164.5
+    Lyrics: 
+  - Column: 0
+    Beat: 165
+    Lyrics: 
+  - Column: 2
+    Beat: 166
+    Lyrics: 
+  - Column: 0
+    Beat: 167.5
+    Lyrics: 
+  - Column: 2
+    Beat: 168.5
+    Lyrics: 
+  - Column: 0
+    Beat: 169
+    Lyrics: 
+  - Column: 2
+    Beat: 170
+    Lyrics: 
+  - Column: 0
+    Beat: 171.5
+    Lyrics: 
+  - Column: 1
+    Beat: 179.04507
+    Lyrics: we
+  - Column: 1
+    Beat: 180.01921
+    Lyrics: 
+  - Column: 1
+    Beat: 180.99644
+    Lyrics: 
+  - Column: 1
+    Beat: 181.48358
+    Lyrics: 
+  - Column: 1
+    Beat: 181.93733
+    Lyrics: 
+  - Column: 1
+    Beat: 182.44101
+    Lyrics: 
+  - Column: 1
+    Beat: 182.94774
+    Lyrics: 
+  - Column: 1
+    Beat: 183.46773
+    Lyrics: 
+  - Column: 1
+    Beat: 184.47614
+    Lyrics: 
+  - Column: 1
+    Beat: 184.93016
+    Lyrics: 
+  - Column: 1
+    Beat: 190.38234
+    Lyrics: 
+  - Column: 1
+    Beat: 191.40591
+    Lyrics: 
+  - Column: 1
+    Beat: 192.26984
+    Lyrics: 
+  - Column: 1
+    Beat: 192.81953
+    Lyrics: 
+  - Column: 1
+    Beat: 193.31056
+    Lyrics: 
+  - Column: 1
+    Beat: 195.2435
+    Lyrics: 
+  - Column: 1
+    Beat: 195.7498
+    Lyrics: 
+  - Column: 1
+    Beat: 196.69093
+    Lyrics: 
+  - Column: 1
+    Beat: 197.12755
+    Lyrics: 
+  - Column: 1
+    Beat: 197.7492
+    Lyrics: 
+  - Column: 1
+    Beat: 198.26935
+    Lyrics: 
+  - Column: 1
+    Beat: 198.77359
+    Lyrics: 
+  - Column: 1
+    Beat: 199.2458
+    Lyrics: 
+  - Column: 1
+    Beat: 200.30243
+    Lyrics: 
+  - Column: 1
+    Beat: 200.8221
+    Lyrics: 
+  - Column: 0
+    Beat: 210.79582
+    Lyrics: 
+  - Column: 2
+    Beat: 211.33447
+    Lyrics: 
+  - Column: 0
+    Beat: 211.85167
+    Lyrics: 
+  - Column: 2
+    Beat: 212.35664
+    Lyrics: 
+  - Column: 0
+    Beat: 212.86015
+    Lyrics: 
+  - Column: 2
+    Beat: 213.31644
+    Lyrics: 
+  - Column: 0
+    Beat: 213.8537
+    Lyrics: 
+  - Column: 2
+    Beat: 214.30666
+    Lyrics: 
+  - Column: 0
+    Beat: 214.8286
+    Lyrics: 
+  - Column: 2
+    Beat: 215.33383
+    Lyrics: 
+  - Column: 0
+    Beat: 215.82315
+    Lyrics: 
+  - Column: 2
+    Beat: 216.27928
+    Lyrics: 
+  - Column: 0
+    Beat: 216.78102
+    Lyrics: 
+  - Column: 2
+    Beat: 217.27
+    Lyrics: 
+  - Column: 2
+    Beat: 226.71967
+    Lyrics: 
+  - Column: 0
+    Beat: 227.28871
+    Lyrics: 
+  - Column: 2
+    Beat: 227.79515
+    Lyrics: 
+  - Column: 0
+    Beat: 228.29842
+    Lyrics: 
+  - Column: 2
+    Beat: 228.77226
+    Lyrics: 
+  - Column: 0
+    Beat: 229.2424
+    Lyrics: 
+  - Column: 2
+    Beat: 229.69789
+    Lyrics: 
+  - Column: 0
+    Beat: 230.1698
+    Lyrics: 
+  - Column: 2
+    Beat: 230.62349
+    Lyrics: 
+  - Column: 0
+    Beat: 231.21167
+    Lyrics: 
+  - Column: 2
+    Beat: 231.68004
+    Lyrics: 
+  - Column: 0
+    Beat: 232.21786
+    Lyrics: 
+  - Column: 2
+    Beat: 232.67279
+    Lyrics: 
+  - Column: 0
+    Beat: 233.14746
+    Lyrics: 
+  - Column: 1
+    Beat: 241.53923
+    Lyrics: 
+  - Column: 1
+    Beat: 243.08376
+    Lyrics: 
+  - Column: 1
+    Beat: 244.12677
+    Lyrics: 
+  - Column: 1
+    Beat: 244.62837
+    Lyrics: 
+  - Column: 1
+    Beat: 245.62167
+    Lyrics: 
+  - Column: 1
+    Beat: 246.97282
+    Lyrics: 
+  - Column: 1
+    Beat: 247.542
+    Lyrics: 
+  - Column: 1
+    Beat: 248.02942
+    Lyrics: 
+  - Column: 1
+    Beat: 248.53334
+    Lyrics: 
+  - Column: 1
+    Beat: 248.99791
+    Lyrics: 
+  - Column: 1
+    Beat: 249.57578
+    Lyrics: 
+  - Column: 1
+    Beat: 250.97632
+    Lyrics: 
+  - Column: 1
+    Beat: 257.51447
+    Lyrics: 
+  - Column: 1
+    Beat: 259.00873
+    Lyrics: 
+  - Column: 1
+    Beat: 260.01788
+    Lyrics: 
+  - Column: 1
+    Beat: 260.55573
+    Lyrics: 
+  - Column: 1
+    Beat: 261.04355
+    Lyrics: 
+  - Column: 1
+    Beat: 261.54666
+    Lyrics: 
+  - Column: 1
+    Beat: 262.9788
+    Lyrics: 
+  - Column: 1
+    Beat: 263.4258
+    Lyrics: 
+  - Column: 1
+    Beat: 264.0685
+    Lyrics: 
+  - Column: 1
+    Beat: 264.59085
+    Lyrics: 
+  - Column: 1
+    Beat: 265.07794
+    Lyrics: 
+  - Column: 1
+    Beat: 265.4593
+    Lyrics: 
+  - Column: 1
+    Beat: 267.0459
+    Lyrics: 

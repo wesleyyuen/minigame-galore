@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e62db02545f690448a9c486fae63d90, type: 3}
+  m_Name: Bulbasaur
+  m_EditorClassIdentifier: 
+  _name: 0
+  _type1: {fileID: 11400000, guid: f75f87085e5b1294fa6835771104a308, type: 2}
+  _type2: {fileID: 0}
+  _baseStat:
+    HP: 34
+    HPPerLevel: 5
+    Attack: 5
+    AttackPerLevel: 1
+    Defense: 5
+    DefensePerLevel: 1
+    Speed: 5
+    SpeedPerLevel: 1
+  _moveset:
+  - {fileID: 11400000, guid: c8cd26f536adc2544af766e5b6f07060, type: 2}
+  - {fileID: 11400000, guid: 8e1e8127c4aa61a499a86d76913a688a, type: 2}
+  _sprite: {fileID: 569319876365475096, guid: 6da1eb8aac2f5a74ebf81196dadb6439, type: 3}

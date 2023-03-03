@@ -1,0 +1,26 @@
+version: 2
+tpsheetFileNames:
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.tpsheet
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Bulbasaur/Animations/Back/Bulbasaur-Back.tpsheet
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Bulbasaur/Animations/Front/Bulbasaur-Front.tpsheet
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Charmander/Animation/Back/Charmander-Back.tpsheet
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Charmander/Animation/Front/Charmander-Front.tpsheet
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Squirtle/Animation/Back/Squirtle-Back.tpsheet
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Squirtle/Animation/Front/Squirtle-Front.tpsheet
+textureFileNames:
+- Assets/codeandweb.com/Example/SpriteSheet/sprites.png
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Bulbasaur/Animations/Back/Bulbasaur-Back.png
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Bulbasaur/Animations/Front/Bulbasaur-Front.png
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Charmander/Animation/Back/Charmander-Back.png
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Charmander/Animation/Front/Charmander-Front.png
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Squirtle/Animation/Back/Squirtle-Back.png
+- Assets/Genres/TurnBasedRPG/Resources/Pokemons/Squirtle/Animation/Front/Squirtle-Front.png
+normalmapFileNames:
+- Assets/codeandweb.com/Example/SpriteSheet/sprites_n.png
+- 
+- 
+- 
+- 
+- 
+- 
+enableDebugOutput: 0
