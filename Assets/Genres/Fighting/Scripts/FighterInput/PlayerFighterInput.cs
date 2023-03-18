@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerFighterInput : FighterInput, InputMaster.IFightingActions
 {
     private InputMaster _inputMaster;
-    public event Action Event_Pause;
+    // public event Action Event_Pause;
 
     private void OnEnable()
     {
@@ -31,24 +31,48 @@ public class PlayerFighterInput : FighterInput, InputMaster.IFightingActions
         MainMenu.ToMainMenu();
     }
 
-    public void OnPlayerMovement(InputAction.CallbackContext context)
-    {
-    }
-
+#region Movement
+    public void OnPlayerMovement(InputAction.CallbackContext context) {}
     public override Vector2 GetDirectionalInputVector()
     {
         return _inputMaster.Fighting.PlayerMovement.ReadValue<Vector2>();
     }
+#endregion
 
-    public override event Action Event_Jump, Event_JumpCanceled;
+#region Jump
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed) Event_Jump?.Invoke();
-        else if (context.canceled) Event_JumpCanceled?.Invoke();
+        if (context.performed) Jump();
+        else if (context.canceled) CancelJump();
     }
 
     public override bool HasJumpInput()
     {
         return _inputMaster.Fighting.Jump.ReadValue<float>() > 0.5f;
     }
+#endregion
+
+#region Attack
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.performed) Attack();
+    }
+
+    public override bool HasAttackInput()
+    {
+        return _inputMaster.Fighting.Attack.ReadValue<float>() > 0.5f;
+    }
+#endregion
+
+#region Block
+    public void OnBlock(InputAction.CallbackContext context)
+    {
+        if (context.performed) Block();
+    }
+
+    public override bool HasBlockInput()
+    {
+        return _inputMaster.Fighting.Block.ReadValue<float>() > 0.5f;
+    }
+#endregion
 }

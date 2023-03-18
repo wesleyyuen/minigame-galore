@@ -19,7 +19,7 @@ public class BeatSpawner : ObjectPool
 
     private void OnDisable()
     {
-        _levelController.Event_StartRhythmLevel += StartSpawnSequence;
+        _levelController.Event_StartRhythmLevel -= StartSpawnSequence;
     }
 
     public void StartSpawnSequence(RhythmLevel level)

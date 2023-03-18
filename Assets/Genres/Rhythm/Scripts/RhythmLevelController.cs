@@ -11,7 +11,7 @@ public class RhythmLevelController : MonoBehaviour
     public Dictionary<Column, List<IBeat>> Beats {get;} = new Dictionary<Column, List<IBeat>>();
     public event Action<RhythmLevel> Event_StartRhythmLevel, Event_EndRhythmLevel;
 
-    private void Start()
+    private void Awake()
     {
         foreach (var col in Enum.GetValues(typeof(Column))) {
             Beats[(Column)col] = new List<IBeat>();
@@ -22,6 +22,8 @@ public class RhythmLevelController : MonoBehaviour
 
     private IEnumerator _StartRhythmLevel(RhythmLevel level)
     {
+        _audioSource.clip = level.Song;
+
         yield return new WaitForSeconds(3);
 
         Event_StartRhythmLevel.Invoke(level);
@@ -29,21 +31,18 @@ public class RhythmLevelController : MonoBehaviour
         // _spawner.StartSpawnSequence(sorted, level.BPM, level.RollingDuration);
 
         // Start Audio
-        if (_audioSource != null && level.Song != null) {
-            _audioSource.clip = level.Song;
-            _audioSource.Play();
-        }
+        _audioSource.Play();
 
         yield return new WaitForSeconds(level.Song.length);
 
         Event_EndRhythmLevel.Invoke(level);
     }
 
-    public void AddBeat(Column col)
-    {
-        // _level.AddBeat(new BeatInfo{
-        //     Column = col,
-        //     Beat = _metronome.BeatCount
-        // });
-    }
+    // public void AddBeat(Column col)
+    // {
+    //     _level.AddBeat(new BeatInfo{
+    //         Column = col,
+    //         Beat = _metronome.BeatCount
+    //     });
+    // }
 }

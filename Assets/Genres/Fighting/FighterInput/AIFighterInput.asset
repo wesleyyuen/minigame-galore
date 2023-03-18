@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0e17415a9ecb844bb35023dfc9ccf4f, type: 3}
   m_Name: AIFighterInput
   m_EditorClassIdentifier: 
+  jumpProbability: 0.5

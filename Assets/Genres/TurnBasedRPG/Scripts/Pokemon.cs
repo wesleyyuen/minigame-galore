@@ -11,7 +11,7 @@ public class Pokemon : IComparable<Pokemon>
     public PokemonSpecies Species {get => _species; private set => _species = value;}
     [SerializeField] private string _name;
     public string Name {
-        get => _name ?? _species?.Name.ToString() ?? "Unknown";
+        get => _name ?? _species?.Name.ToString() ?? "MissingNo";
         private set => _name = value;
     }
     [SerializeField] private int _level = 1;

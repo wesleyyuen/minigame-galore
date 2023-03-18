@@ -1,6 +1,6 @@
 using TurnBasedRPG;
 
-public class WildBattleState : BattleState
+public sealed class WildBattleState : BattleState
 {
     public WildBattleState(
         GameStateMachine stateMachine,

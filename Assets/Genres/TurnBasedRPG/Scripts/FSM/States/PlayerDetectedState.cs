@@ -4,7 +4,7 @@ using UnityEngine;
 using MEC;
 using TurnBasedRPG;
 
-public class PlayerDetectedState : State
+public sealed class PlayerDetectedState : State
 {
     private GameStateMachine _fsm;
     private Rigidbody2D _trainerRB;

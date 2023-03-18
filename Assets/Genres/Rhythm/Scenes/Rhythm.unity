@@ -561,6 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
@@ -577,6 +578,7 @@ MonoBehaviour:
   m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!1 &1664665037
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,6 +665,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1841262922}
   - component: {fileID: 1841262921}
+  - component: {fileID: 1841262923}
   m_Layer: 0
   m_Name: Audio Source
   m_TagString: Untagged
@@ -781,6 +784,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1841262923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841262920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96814ce73c7b501408a8493c28e46dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rms: 0
+  db: 0
+  pitch: 0
 --- !u!1 &1942583934
 GameObject:
   m_ObjectHideFlags: 0

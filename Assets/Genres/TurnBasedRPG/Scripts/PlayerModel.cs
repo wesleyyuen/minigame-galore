@@ -19,6 +19,5 @@ public class PlayerModel : TrainerModel
     {
         base.Start();
         TrainerInfo.AddCreature(new Pokemon(_pokemonManifest.GetRandomCreatureSpecies(), 6, null));
-        // TrainerInfo.AddCreature(new Pokemon(_pokemonManifest.GetCreatureSpecies(TurnBasedRPG.PokemonSpeciesName.Bulbasaur), 6, null));
     }
 }

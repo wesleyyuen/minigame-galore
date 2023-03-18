@@ -24,5 +24,4 @@ public struct BeatInfo
 {
     public Column Column;
     public float Beat; // in Beat counts
-    public string Lyrics;
 }

@@ -5,11 +5,11 @@ using TurnBasedRPG;
 
 public class PokemonSpeciesManifest
 {
-    private List<PokemonSpecies> _manifest = new List<PokemonSpecies>();
+    private HashSet<PokemonSpecies> _manifest = new HashSet<PokemonSpecies>();
 
     public PokemonSpeciesManifest()
     {
-        _manifest = Resources.LoadAll("Pokemons", typeof(PokemonSpecies)).Cast<PokemonSpecies>().ToList();
+        _manifest = Resources.LoadAll("Pokemons", typeof(PokemonSpecies)).Cast<PokemonSpecies>().ToHashSet();
     }
 
     public PokemonSpecies GetCreatureSpecies(PokemonSpeciesName name)
@@ -19,6 +19,6 @@ public class PokemonSpeciesManifest
 
     public PokemonSpecies GetRandomCreatureSpecies()
     {
-        return _manifest[Random.Range(0, _manifest.Count)];
+        return _manifest.ElementAtOrDefault(Random.Range(0, _manifest.Count));
     }
 }

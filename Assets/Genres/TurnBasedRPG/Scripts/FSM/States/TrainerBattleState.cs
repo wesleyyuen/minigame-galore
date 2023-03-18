@@ -1,7 +1,6 @@
 using TurnBasedRPG;
-using TurnBasedRPG.UI;
 
-public class TrainerBattleState : BattleState
+public sealed class TrainerBattleState : BattleState
 {
     public TrainerBattleState(
         GameStateMachine stateMachine,

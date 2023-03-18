@@ -17,6 +17,7 @@ public class TrainerModel : MonoBehaviour
     {
         foreach (var item in _inventory)
         {
+            if (item.item == null || item.amount == 0) return;
             TrainerInfo.AddItem(item.item, item.amount);
         }
     }

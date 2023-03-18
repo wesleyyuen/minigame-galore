@@ -194,7 +194,7 @@ public class BattleState : State
     {
         // 1v1 Only for simplicity sake
         // Wild pokemon will have null trainer value
-        public Dictionary<Pokemon, Trainer> Pokemons = new();
+        public Dictionary<Pokemon, Trainer> Pokemons = new Dictionary<Pokemon, Trainer>();
 
         public void Add(Pokemon pokemon)
         {

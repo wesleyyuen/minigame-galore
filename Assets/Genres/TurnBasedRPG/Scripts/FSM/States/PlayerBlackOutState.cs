@@ -1,7 +1,7 @@
 using UnityEngine;
 using TurnBasedRPG;
 
-public class PlayerBlackOutState : State
+public sealed class PlayerBlackOutState : State
 {
     private GameStateMachine _fsm;
 

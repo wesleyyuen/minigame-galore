@@ -5,7 +5,7 @@ using Rhythm;
 public class RhythmInput : InputMaster.IRhythmActions
 {
     private InputMaster _inputMaster;
-    public event Action Event_Pause;
+    // public event Action Event_Pause;
     public event Action<Column> Event_Beat;
 
     public RhythmInput()
