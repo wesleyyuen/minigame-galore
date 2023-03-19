@@ -7,9 +7,9 @@ public class PokemonSpeciesManifest
 {
     private HashSet<PokemonSpecies> _manifest = new HashSet<PokemonSpecies>();
 
-    public PokemonSpeciesManifest()
+    public PokemonSpeciesManifest(IPokemonSpeciesLoader loader)
     {
-        _manifest = Resources.LoadAll("Pokemons", typeof(PokemonSpecies)).Cast<PokemonSpecies>().ToHashSet();
+        _manifest = loader.Load("Pokemons").ToHashSet();
     }
 
     public PokemonSpecies GetCreatureSpecies(PokemonSpeciesName name)

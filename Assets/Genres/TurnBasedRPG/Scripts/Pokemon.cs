@@ -80,6 +80,7 @@ public class Pokemon : IComparable<Pokemon>
         {
             move = CurrentMoves[UnityEngine.Random.Range(0, CurrentMoves.Length - 1)];
         } while (move == null);
+        
         return move;
     }
 
