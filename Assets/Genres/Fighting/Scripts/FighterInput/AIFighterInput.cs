@@ -19,15 +19,15 @@ public class AIFighterInput : FighterInput
 
     public override void Update()
     {
-        // if (HasJumpInput()) Jump();
-        // if (HasAttackInput()) Attack();
-        // if (HasBlockInput()) Block();
+        if (HasJumpInput()) Jump();
+        if (HasAttackInput()) Attack();
+        if (HasBlockInput()) Block();
     }
 
     public override Vector2 GetDirectionalInputVector()
     {
         return Vector2.zero;
-        // return new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+        return new Vector2(Random.Range(-1f, 1f), 0f);
     }
 
     public override bool HasJumpInput()

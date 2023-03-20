@@ -85,6 +85,14 @@ public class Trainer : IEquatable<Trainer>
         return Inventory.Keys.FirstOrDefault(item => item.Name == name);
     }
 
+    public void FullHealTeam()
+    {
+        foreach (var pkmn in PokemonsOnHand)
+        {
+            pkmn.FullHeal();
+        }
+    }
+
     public bool Equals(Trainer other)
     {
         if (other == null) return false;

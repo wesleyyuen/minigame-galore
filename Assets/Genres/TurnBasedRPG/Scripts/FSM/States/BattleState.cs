@@ -94,6 +94,7 @@ public class BattleState : State
                             _turns.Add(new Turn(_turns.Count, pokemon, new UseItemAction(trainer, trainer.GetItem(action.Name)), target));
                             break;
                         case TurnActionType.Run:
+                            // TODO: handle trainer battle cannot run
                             _result = BattleResult.PlayerRan;
                             break;
                         default: break;
@@ -210,7 +211,12 @@ public class BattleState : State
         {
             foreach (var (pkmn, trainer) in Pokemons)
             {
-                trainer?.IChooseYou(null);
+                if (trainer == null) continue;
+
+                // reset enemy health
+                if (!trainer.IsPlayer) trainer.FullHealTeam();
+
+                trainer.IChooseYou(null);
             }
 
             Pokemons.Clear();

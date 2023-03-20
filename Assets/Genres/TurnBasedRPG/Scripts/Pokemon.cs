@@ -58,6 +58,11 @@ public class Pokemon : IComparable<Pokemon>
         CurrentHP = Mathf.Max(CurrentHP + heals, Stat.HP);
     }
 
+    public void FullHeal()
+    {
+        CurrentHP = Stat.HP;
+    }
+
     public void SetTrainer(Trainer trainer)
     {
         Trainer = trainer;

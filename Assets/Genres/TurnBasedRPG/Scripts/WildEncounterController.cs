@@ -1,21 +1,16 @@
 using System.Linq;
 using UnityEngine.Tilemaps;
 using UnityEngine;
-using Zenject;
 
 public class WildEncounterController
 {
     private Tilemap _grassTilemap;
     private PokemonSpeciesManifest _pokemonManifest;
 
-    [Inject]
-    public void Init(PokemonSpeciesManifest pokemonManifest)
+    public WildEncounterController(PokemonSpeciesManifest pokemonManifest)
     {
         _pokemonManifest = pokemonManifest;
-    }
 
-    public WildEncounterController()
-    {
         var tilemaps = GameObject.FindObjectsOfType<Tilemap>();
         _grassTilemap = tilemaps.FirstOrDefault(tilemap => tilemap.gameObject.name == "Grass");
     }

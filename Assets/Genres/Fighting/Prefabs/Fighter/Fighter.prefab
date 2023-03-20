@@ -138,7 +138,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 7992262388654632245}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 2fa231e6f6dcde04bb7c45a21c93a911, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -192,9 +192,9 @@ MonoBehaviour:
   _movementSpeed: 13
   _jumpVelocity: 43
   _fallGravity: 1.5
-  _lowJumpGravity: 3
+  _lowJumpGravity: 5
   _jumpBufferTime: 0.15
-  _coyoteTime: 0.125
+  _coyoteTime: 0.1
   _maxHealth: 100
 --- !u!1 &7992262389494842571
 GameObject:

@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: _fighterInput
       value: 
       objectReference: {fileID: 11400000, guid: 6ba41ab19a8cf4e45989d4e1d4fed7a0, type: 2}
+    - target: {fileID: 7992262388654632242, guid: beaceda74f9dc5b44a26b37a43e3c7b0, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 2fa231e6f6dcde04bb7c45a21c93a911, type: 2}
     - target: {fileID: 7992262388654632245, guid: beaceda74f9dc5b44a26b37a43e3c7b0, type: 3}
       propertyPath: m_Name
       value: AI
