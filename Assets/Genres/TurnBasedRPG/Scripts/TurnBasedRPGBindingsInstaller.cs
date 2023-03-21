@@ -4,11 +4,11 @@ public class TurnBasedRPGBindingsInstaller : MonoInstaller
 {
     public override void InstallBindings()
     {
-        Container.Bind<TurnBasedRPGInput>().AsSingle();
-        Container.Bind<RoundController>().AsSingle();
-        // Container.Bind<IPokemonSpeciesLoader>().To<PokemonScpeiesJSONLoader>().AsSingle();
-        Container.Bind<IPokemonSpeciesLoader>().To<PokemonSpeciesSOLoader>().AsSingle();
-        Container.Bind<PokemonSpeciesManifest>().AsSingle();
-        Container.Bind<WildEncounterController>().AsSingle();
+        Container.BindInterfacesAndSelfTo<TurnBasedRPGInput>().AsSingle();
+        Container.BindInterfacesAndSelfTo<RoundController>().AsSingle();
+        // Container.BindInterfacesAndSelfTo<PokemonScpeiesJSONLoader>().To<PokemonScpeiesJSONLoader>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PokemonSpeciesSOLoader>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PokemonSpeciesManifest>().AsSingle();
+        Container.BindInterfacesAndSelfTo<WildEncounterController>().AsSingle();
     }
 }
