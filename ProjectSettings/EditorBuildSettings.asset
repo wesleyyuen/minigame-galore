@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Genres/TurnBasedRPG/Scenes/TurnBasedRPG.unity
     guid: c145a7a409ae2c84e800b7de7398c189
+  - enabled: 1
+    path: Assets/Genres/Fighting/Scenes/Fighting.unity
+    guid: 3ca09c01643ede543909c5ea06322c20
   m_configObjects: {}
