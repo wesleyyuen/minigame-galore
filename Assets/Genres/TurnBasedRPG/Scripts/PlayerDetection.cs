@@ -1,23 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TurnBasedRPG;
+using Zenject;
 
 public class PlayerDetection : MonoBehaviour
 {
-    private GameStateMachine _fsm;
-
-    private void Awake()
+    private SignalBus _signalBus;
+    
+    [Inject]
+    public void Init(SignalBus signalBus)
     {
-        _fsm = FindObjectOfType<GameStateMachine>();
+        _signalBus = signalBus;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // TODO: try moving this logic to overworld state (signals maybe?)
-        if (other.CompareTag("Player") && _fsm.CurrentState == _fsm.GetState(GameState.Overworld))
+        if (other.CompareTag("Player"))
         {
-            _fsm.ChangeState(_fsm.GetState(GameState.PlayerDetected), transform.parent);
+            _signalBus.TryFire(new PlayerDetectedSignal(transform.parent));
         }
     }
 }

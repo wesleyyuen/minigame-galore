@@ -16,8 +16,9 @@ public class BattleState : State
     protected BattleResult _result = BattleResult.Unresolved;
 
     public BattleState(
+        string name,
         GameStateMachine stateMachine,
-        RoundController roundController) : base(stateMachine)
+        RoundController roundController) : base(name, stateMachine)
     {
         _fsm = stateMachine;
         _roundController = roundController;
@@ -33,15 +34,13 @@ public class BattleState : State
 
         while (_result == BattleResult.Unresolved)
         {
-            bool roundEnded = false;
-            _fsm.StartCoroutine(_ProcessRound(() => roundEnded = true));
-            yield return new WaitUntil(() => roundEnded);
+            yield return _ProcessRound();
         }
  
         _fsm.StartCoroutine(_EndBattle());
     }
 
-    protected IEnumerator _ProcessRound(Action callback)
+    protected IEnumerator _ProcessRound()
     {
         // Getting all turns in this round
         foreach (var (pkmn, trainer) in _battleInfo.Pokemons)
@@ -141,10 +140,9 @@ public class BattleState : State
         }
 
         _turns.Clear();
-        callback?.Invoke();
     }
 
-    protected void ChooseNextPokemon(Trainer trainer, Pokemon curr, Pokemon next)
+    private void ChooseNextPokemon(Trainer trainer, Pokemon curr, Pokemon next)
     {
         trainer.IChooseYou(next);
         _turns.Add(new Turn(_turns.Count, curr, new SwitchPokemon(() => {
@@ -152,7 +150,7 @@ public class BattleState : State
         }), next));
     }
 
-    protected IEnumerator _EndBattle()
+    private IEnumerator _EndBattle()
     {
         switch (_result)
         {
@@ -161,7 +159,7 @@ public class BattleState : State
                 UIManager.SetBattleText($"You won!");
                 yield return new WaitForSeconds(Constants.DIALOG_DURATION);
 
-                _fsm.ChangeState(_fsm.GetState(GameState.Overworld));
+                _fsm.ChangeState(GameState.Overworld.ToString());
                 break;
             case BattleResult.PlayerLost:
                 UIManager.SetBattleText("You have no more Pokemon that can fight!");
@@ -170,16 +168,16 @@ public class BattleState : State
                 UIManager.SetBattleText("You were overwhelmed by your defeat!");
                 yield return new WaitForSeconds(Constants.DIALOG_DURATION);
 
-                _fsm.ChangeState(_fsm.GetState(GameState.PlayerBlackOut));
+                _fsm.ChangeState(GameState.PlayerBlackOut.ToString());
                 break;
             case BattleResult.WildPokemonCaught:
-                _fsm.ChangeState(_fsm.GetState(GameState.Overworld));
+                _fsm.ChangeState(GameState.Overworld.ToString());
                 break;
             case BattleResult.PlayerRan:
                 UIManager.SetBattleText("You ran away safely!");
                 yield return new WaitForSeconds(Constants.DIALOG_DURATION);
                   
-                _fsm.ChangeState(_fsm.GetState(GameState.Overworld));
+                _fsm.ChangeState(GameState.Overworld.ToString());
                 break;
         }
     }

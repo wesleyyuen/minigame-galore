@@ -4,7 +4,7 @@ public sealed class TrainerBattleState : BattleState
 {
     public TrainerBattleState(
         GameStateMachine stateMachine,
-        RoundController roundController) : base(stateMachine, roundController)
+        RoundController roundController) : base(GameState.TrainerBattle.ToString(), stateMachine, roundController)
     {
     }
 

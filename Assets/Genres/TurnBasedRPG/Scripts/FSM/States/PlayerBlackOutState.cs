@@ -6,7 +6,7 @@ public sealed class PlayerBlackOutState : State
     private GameStateMachine _fsm;
 
     public PlayerBlackOutState(
-        GameStateMachine stateMachine) : base(stateMachine)
+        GameStateMachine stateMachine) : base(GameState.PlayerBlackOut.ToString(), stateMachine)
     {
         _fsm = stateMachine;
     }
@@ -25,6 +25,6 @@ public sealed class PlayerBlackOutState : State
 
         // TODO: Screen White Fade Out
 
-        _fsm.ChangeState(_fsm.GetState(GameState.Overworld));
+        _fsm.ChangeState(GameState.Overworld.ToString());
     }
 }

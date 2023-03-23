@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -14,28 +13,37 @@ namespace TurnBasedRPG
         public PlayerModel player;
         public LayerMask unwalkableLayers;
 
-        private Dictionary<GameState, State> _states = new Dictionary<GameState, State>();
+        private SignalBus _signalBus;
 
-        protected override State GetInitialState() => GetState(GameState.Overworld);
+        protected override State GetInitialState() => GetState(GameState.Overworld.ToString());
 
         [Inject]
         public void Init(
+            SignalBus signalBus,
             TurnBasedRPGInput input,
             PokemonSpeciesManifest pokemonManifest,
             RoundController roundController,
             WildEncounterController wildEncounterController)
         {
+            _signalBus = signalBus;
+            
             // Create all states
-            _states.Add(GameState.Overworld, new OverworldState(this, input, pokemonManifest, wildEncounterController));
-            _states.Add(GameState.WildBattle, new WildBattleState(this, roundController));
-            _states.Add(GameState.TrainerBattle, new TrainerBattleState(this, roundController));
-            _states.Add(GameState.PlayerBlackOut, new PlayerBlackOutState(this));
-            _states.Add(GameState.PlayerDetected, new PlayerDetectedState(this));
+            States.Add(GameState.Overworld.ToString(), new OverworldState(this, input, pokemonManifest, wildEncounterController));
+            States.Add(GameState.WildBattle.ToString(), new WildBattleState(this, roundController));
+            States.Add(GameState.TrainerBattle.ToString(), new TrainerBattleState(this, roundController));
+            States.Add(GameState.PlayerBlackOut.ToString(), new PlayerBlackOutState(this));
+            States.Add(GameState.PlayerDetected.ToString(), new PlayerDetectedState(this));
         }
 
-        public State GetState(GameState state)
+        private void OnEnable()
         {
-            return _states.FirstOrDefault(kvp => kvp.Key == state).Value;
+            _signalBus.Subscribe<PlayerDetectedSignal>(x => OnPlayerDetected(x.Detector));
+        }
+        
+        private void OnPlayerDetected(Transform detector)
+        {
+            if (CurrentState != GameState.Overworld.ToString()) return;
+            ChangeState(GameState.PlayerDetected.ToString(), detector);
         }
     }
 

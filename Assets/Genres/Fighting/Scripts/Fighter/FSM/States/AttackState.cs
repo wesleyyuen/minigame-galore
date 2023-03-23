@@ -12,7 +12,7 @@ public class AttackState : State
     public AttackState(
         FighterStateMachine stateMachine,
         Animator animator,
-        HitHandler hitHandler) : base(stateMachine)
+        HitHandler hitHandler) : base(GameState.Attack.ToString(), stateMachine)
     {
         _fsm = stateMachine;
         _animator = animator;

@@ -24,9 +24,7 @@ namespace Fighting
         [Header("Health")]
         [SerializeField] private float _maxHealth;
         private float _currentHealth;
-
-        private Dictionary<GameState, State> _states = new Dictionary<GameState, State>();
-        protected override State GetInitialState() => GetState(GameState.Idle);
+        protected override State GetInitialState() => GetState(GameState.Idle.ToString());
 
         private Rigidbody2D _rb;
         private Collider2D _collider;
@@ -53,9 +51,9 @@ namespace Fighting
             _currentHealth = _maxHealth;
 
             // Create all states
-            _states.Add(GameState.Idle, new IdleState(this));
-            _states.Add(GameState.Attack, new AttackState(this, _animator, _hitHandler));
-            _states.Add(GameState.Block, new BlockState(this));
+            States.Add(GameState.Idle.ToString(), new IdleState(this));
+            States.Add(GameState.Attack.ToString(), new AttackState(this, _animator, _hitHandler));
+            States.Add(GameState.Block.ToString(), new BlockState(this));
 
             _input = (FighterInput) ScriptableObject.Instantiate(_fighterInput);
             _input.SetSelf(this);
@@ -105,11 +103,6 @@ namespace Fighting
             HandleJump();
 
             base.FixedUpdate();
-        }
-
-        public State GetState(GameState state)
-        {
-            return _states.FirstOrDefault(kvp => kvp.Key == state).Value;
         }
 
         public void TakeDamage(HitInfo hit)
@@ -181,7 +174,7 @@ namespace Fighting
         {
             Debug.Log("Attack");
             // TODO: check state, or better yet, make attack state check itself
-            ChangeState(GetState(GameState.Attack));
+            ChangeState(GameState.Attack.ToString());
         }
 
         private void OnBlock()

@@ -4,7 +4,7 @@ public sealed class WildBattleState : BattleState
 {
     public WildBattleState(
         GameStateMachine stateMachine,
-        RoundController roundController) : base(stateMachine, roundController)
+        RoundController roundController) : base(GameState.WildBattle.ToString(), stateMachine, roundController)
     {
     }
 

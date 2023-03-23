@@ -17,7 +17,7 @@ public sealed class OverworldState : State
         GameStateMachine stateMachine,
         TurnBasedRPGInput input,
         PokemonSpeciesManifest pokemonManifest,
-        WildEncounterController wildEncounterController) : base(stateMachine)
+        WildEncounterController wildEncounterController) : base(GameState.Overworld.ToString(), stateMachine)
     {
         _fsm = stateMachine;
         _input = input;
@@ -65,7 +65,7 @@ public sealed class OverworldState : State
         var encounter = _wildEncounterController.GetWildEncountersAtPostion(pos);
         if (encounter != null)
         {
-            _fsm.ChangeState(_fsm.GetState(GameState.WildBattle), encounter);
+            _fsm.ChangeState(GameState.WildBattle.ToString(), encounter);
         }
     }
 

@@ -13,7 +13,7 @@ public abstract class StackStateMachine : StateMachine
 
     protected override void Update()
     {
-        if (_stack.TryPeek(out State currentState))
+        if (_stack.TryPeek(out var currentState))
         {
             currentState.UpdateState();
         }
@@ -21,15 +21,17 @@ public abstract class StackStateMachine : StateMachine
 
     protected override void FixedUpdate()
     {
-        if (_stack.TryPeek(out State currentState))
+        if (_stack.TryPeek(out var currentState))
         {
             currentState.FixedUpdateState();
         }
     }
 
     // TODO: try to remove Object args
-    public override void ChangeState(State newState, System.Object args = null)
+    public override void ChangeState(string newStateName, System.Object args = null)
     {
+        if (!States.TryGetValue(newStateName, out var newState)) return;
+        
         PopState();
         PushState(newState, args);
     }

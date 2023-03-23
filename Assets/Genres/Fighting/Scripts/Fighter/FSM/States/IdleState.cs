@@ -7,7 +7,7 @@ public class IdleState : State
 {
     private FighterStateMachine _fsm;
 
-    public IdleState(FighterStateMachine stateMachine) : base(stateMachine)
+    public IdleState(FighterStateMachine stateMachine) : base(GameState.Idle.ToString(), stateMachine)
     {
         _fsm = stateMachine;
     }

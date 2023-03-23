@@ -7,7 +7,7 @@ public class BlockState : State
 {
     private FighterStateMachine _fsm;
 
-    public BlockState(FighterStateMachine stateMachine) : base(stateMachine)
+    public BlockState(FighterStateMachine stateMachine) : base(GameState.Block.ToString(), stateMachine)
     {
         _fsm = stateMachine;
     }

@@ -11,7 +11,7 @@ public sealed class PlayerDetectedState : State
     private TrainerModel _trainer;
 
     public PlayerDetectedState(
-        GameStateMachine stateMachine) : base(stateMachine)
+        GameStateMachine stateMachine) : base(GameState.PlayerDetected.ToString(), stateMachine)
     {
         _fsm = stateMachine;
     }
@@ -49,7 +49,7 @@ public sealed class PlayerDetectedState : State
         yield return Timing.WaitForSeconds(2);
 
         // TODO: trainer walk to closest tile to player
-        _fsm.ChangeState(_fsm.GetState(GameState.TrainerBattle), _trainer.TrainerInfo);
+        _fsm.ChangeState(GameState.TrainerBattle.ToString(), _trainer.TrainerInfo);
     }
 
     public override void ExitState()

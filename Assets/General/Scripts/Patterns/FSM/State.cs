@@ -1,10 +1,12 @@
 public class State
 {
-    protected StateMachine stateMachine {get; set;}
+    public string Name { get; }
+    protected StateMachine StateMachine {get;}
 
-    protected State(StateMachine stateMachine)
+    protected State(string name, StateMachine stateMachine)
     {
-        this.stateMachine = stateMachine;
+        Name = name;
+        StateMachine = stateMachine;
     }
 
     public virtual void EnterState(System.Object args = null) {}
