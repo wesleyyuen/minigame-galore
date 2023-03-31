@@ -1,31 +1,31 @@
 using System.Collections.Generic;
 using System.Linq;
-using Zenject;
+using UnityEngine;
 
-public abstract class StateMachine : IInitializable, ITickable, IFixedTickable
+public abstract class MonoStateMachine : MonoBehaviour
 {
-    private State _currentState;
+    private MonoState _currentState;
     protected string CurrentState => _currentState.Name;
-    protected Dictionary<string, State> States { get; } = new Dictionary<string, State>();
+    protected Dictionary<string, MonoState> States { get; } = new Dictionary<string, MonoState>();
     
-    public virtual void Initialize()
+    protected virtual void Start()
     {
         _currentState = GetInitialState();
         _currentState?.EnterState();
     }
 
-    public virtual void Tick()
+    protected virtual void Update()
     {
         _currentState?.UpdateState();
     }
 
-    public virtual void FixedTick()
+    protected virtual void FixedUpdate()
     {
         _currentState?.FixedUpdateState();
     }
 
     // TODO: try to remove Object args
-    public virtual void ChangeState(string newStateName, System.Object args = null)
+    public virtual void ChangeState(string newStateName, object args = null)
     {
         if (!States.TryGetValue(newStateName, out var newState)) return;
         
@@ -34,10 +34,10 @@ public abstract class StateMachine : IInitializable, ITickable, IFixedTickable
         _currentState.EnterState(args);
     }
     
-    protected State GetState(string state)
+    protected MonoState GetState(string state)
     {
         return States.FirstOrDefault(kvp => kvp.Key == state).Value;
     }
 
-    protected abstract State GetInitialState();
+    protected abstract MonoState GetInitialState();
 }

@@ -1,8 +1,8 @@
-public class State
+public class MonoState
 {
     public string Name { get; }
 
-    protected State(string name, StateMachine stateMachine)
+    protected MonoState(string name, MonoStateMachine stateMachine)
     {
         Name = name;
         // stateMachine casted to child class

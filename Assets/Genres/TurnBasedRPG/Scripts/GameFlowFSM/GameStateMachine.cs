@@ -4,7 +4,7 @@ using Zenject;
 
 namespace TurnBasedRPG
 {
-    public class GameStateMachine : StateMachine
+    public class GameStateMachine : MonoStateMachine
     {
         [Header("BattleState References")]
         public CanvasGroup battleScreen;
@@ -15,7 +15,7 @@ namespace TurnBasedRPG
 
         private SignalBus _signalBus;
 
-        protected override State GetInitialState() => GetState(GameState.Overworld.ToString());
+        protected override MonoState GetInitialState() => GetState(GameState.Overworld.ToString());
 
         [Inject]
         public void Init(

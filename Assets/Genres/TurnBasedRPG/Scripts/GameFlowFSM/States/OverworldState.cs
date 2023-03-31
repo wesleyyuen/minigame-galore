@@ -3,7 +3,7 @@ using UnityEngine;
 using MEC;
 using TurnBasedRPG;
 
-public sealed class OverworldState : State
+public sealed class OverworldState : MonoState
 {
     private GameStateMachine _fsm;
     private TurnBasedRPGInput _input;

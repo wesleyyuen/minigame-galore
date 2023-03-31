@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fighting;
 
-public class AttackState : State
+public class AttackState : MonoState
 {
     private FighterStateMachine _fsm;
     private Animator _animator;

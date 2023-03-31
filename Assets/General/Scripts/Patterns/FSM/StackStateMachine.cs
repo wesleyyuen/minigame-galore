@@ -4,14 +4,14 @@ public abstract class StackStateMachine : StateMachine
 {
     private Stack<State> _stack = new Stack<State>();
     
-    private void Start()
+    public override void Initialize()
     {
-        State current = GetInitialState();
+        var current = GetInitialState();
         _stack.Push(current);
         current.EnterState();
     }
 
-    protected override void Update()
+    public override void Tick()
     {
         if (_stack.TryPeek(out var currentState))
         {
@@ -19,7 +19,7 @@ public abstract class StackStateMachine : StateMachine
         }
     }
 
-    protected override void FixedUpdate()
+    public override void FixedTick()
     {
         if (_stack.TryPeek(out var currentState))
         {
@@ -28,7 +28,7 @@ public abstract class StackStateMachine : StateMachine
     }
 
     // TODO: try to remove Object args
-    public override void ChangeState(string newStateName, System.Object args = null)
+    public override void ChangeState(string newStateName, object args = null)
     {
         if (!States.TryGetValue(newStateName, out var newState)) return;
         
@@ -37,7 +37,7 @@ public abstract class StackStateMachine : StateMachine
     }
 
     // TODO: try to remove Object args
-    public void PushState(State newState, System.Object args = null)
+    public void PushState(State newState, object args = null)
     {
         _stack.Push(newState);
         newState.EnterState(args);

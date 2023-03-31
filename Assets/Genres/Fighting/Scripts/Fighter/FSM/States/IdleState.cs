@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fighting;
 
-public class IdleState : State
+public class IdleState : MonoState
 {
     private FighterStateMachine _fsm;
 

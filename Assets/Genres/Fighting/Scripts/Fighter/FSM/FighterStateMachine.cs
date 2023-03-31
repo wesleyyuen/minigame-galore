@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Fighting
 {
-    public class FighterStateMachine : StateMachine
+    public class FighterStateMachine : MonoStateMachine
     {
         [Header("Input")]
         [SerializeField] private FighterInput _fighterInput;
@@ -24,7 +24,7 @@ namespace Fighting
         [Header("Health")]
         [SerializeField] private float _maxHealth;
         private float _currentHealth;
-        protected override State GetInitialState() => GetState(GameState.Idle.ToString());
+        protected override MonoState GetInitialState() => GetState(GameState.Idle.ToString());
 
         private Rigidbody2D _rb;
         private Collider2D _collider;

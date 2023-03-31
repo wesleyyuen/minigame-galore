@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class PriorityQueue<TElement> : IPriorityQueue<TElement>
     where TElement : IComparable<TElement>
@@ -17,18 +18,15 @@ public class PriorityQueue<TElement> : IPriorityQueue<TElement>
 
     public bool Add(TElement element) => _set.Add(element);
 
-    public TElement Peek() => _set.Max;
+    public TElement Peek() => _set.First();
 
     public TElement Pop()
     {
-        if (_set.Count < 0)
-        {
-            return default;
-        }
+        if (_set.Count < 0) return default;
 
-        var max = _set.Max;
-        _set.Remove(max);
-        return max;
+        var first = Peek();
+        _set.Remove(first);
+        return first;
     }
 
     public void Clear() => _set.Clear();

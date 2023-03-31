@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fighting;
 
-public class BlockState : State
+public class BlockState : MonoState
 {
     private FighterStateMachine _fsm;
 

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokemonScpeiesJSONLoader : IPokemonSpeciesLoader
+public class PokemonSpeciesJSONLoader : IPokemonSpeciesLoader
 {
     public IEnumerable<PokemonSpecies> Load(string path)
     {

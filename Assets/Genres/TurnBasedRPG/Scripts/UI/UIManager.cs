@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform _itemSelectScreen;
     private ScrollRect _itemSelectionScrollRect;
     [SerializeField] private GameObject _itemInfoPanelPrefab;
+    private CanvasGroup _canvasGroup;
     private TurnBasedRPGInput _input;
     private ActionSelection _currentSelection;
     private Trainer _player;
@@ -36,6 +37,7 @@ public class UIManager : MonoBehaviour
     {
         // TODO: avoid hardcode path
         _battleText = transform.Find("MainBattleScreen/BottomPanel/Text")?.GetComponent<TextMeshProUGUI>();
+        _canvasGroup = GetComponent<CanvasGroup>();
         _pokemonSelections = _pokemonSelectScreen.GetComponentsInChildren<PokemonInfoUIHandler>();
         _itemSelectionScrollRect = _itemSelectScreen.GetComponentInChildren<ScrollRect>();
     }
@@ -53,6 +55,12 @@ public class UIManager : MonoBehaviour
     public void OnBattleStart()
     {
         _pokemonSelectScreen.gameObject.SetActive(false);
+        _canvasGroup.alpha = 1f;
+    }
+
+    public void OnBattleEnd()
+    {
+        _canvasGroup.alpha = 0f;
     }
 
     private void OnBack()
