@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using MEC;
-using TurnBasedRPG;
+using Cysharp.Threading.Tasks;
 using TurnBasedRPG.UI;
 
 public class SwitchPokemon : ITurnAction
@@ -15,20 +13,16 @@ public class SwitchPokemon : ITurnAction
         _uiCallback = uiCallback;
     }
 
-    public IEnumerator<float> DoAction(Pokemon owner, Pokemon target, Action<BattleResult> callback)
+    public async UniTask<BattleResult> DoAction(Pokemon owner, Pokemon target)
     {
         if (owner != null)
         {
-            UIManager.SetBattleText($"Come back, {owner.Name}!");
-            yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
+            await UIManager.Instance.SetBattleText($"Come back, {owner.Name}!");
         }
 
-        UIManager.SetBattleText($"Go, {target.Name}!");
-
         _uiCallback?.Invoke();
+        await UIManager.Instance.SetBattleText($"Go, {target.Name}!");
 
-        yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
-
-        callback?.Invoke(BattleResult.Unresolved);
+        return BattleResult.Unresolved;
     }
 }

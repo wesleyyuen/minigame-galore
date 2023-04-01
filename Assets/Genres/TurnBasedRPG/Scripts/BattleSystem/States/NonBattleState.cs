@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace TurnBasedRPG
 {
-    public sealed class NonBattleState : MonoState
+    public sealed class NonBattleState : State
     {
         public NonBattleState(
-            MonoStateMachine stateMachine) : base(BattleState.NonBattle.ToString(), stateMachine)
+            StateMachine stateMachine) : base(BattleStateType.NonBattle.ToString(), stateMachine)
         {
         }
     }

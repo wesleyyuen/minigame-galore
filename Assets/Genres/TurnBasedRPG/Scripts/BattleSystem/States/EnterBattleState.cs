@@ -1,15 +1,13 @@
-using System;
-using Cysharp.Threading.Tasks;
 using TurnBasedRPG.UI;
 
 namespace TurnBasedRPG.States
 {
-    public sealed class EnterBattleState : MonoState
+    public sealed class EnterBattleState : State
     {
         private BattleStateMachine _battleFsm;
         
         public EnterBattleState(
-            MonoStateMachine stateMachine) : base(BattleState.EnterBattle.ToString(), stateMachine)
+            StateMachine stateMachine) : base(BattleStateType.EnterBattle.ToString(), stateMachine)
         {
             _battleFsm = (BattleStateMachine) stateMachine;
         }
@@ -17,24 +15,27 @@ namespace TurnBasedRPG.States
         public override async void EnterState(object args = null)
         {
             _battleFsm.BattleResult = BattleResult.Unresolved;
-            _battleFsm.UIManager.OnBattleStart();
+            UIManager.Instance.SetPanelVisible(false);
+            UIManager.Instance.OnBattleStart();
 
             var (pokemon, trainer) = _battleFsm.BattleInfo.GetOpponent(_battleFsm.PlayerModel.TrainerInfo);
             if (trainer != null)
             {
-                UIManager.SetBattleText($"You are challenged by {trainer.Name}!");
-                await UniTask.Delay(TimeSpan.FromSeconds(Constants.DIALOG_DURATION));
-                UIManager.SetBattleText($"{trainer.Name} sent out {pokemon.Name}!");
-                await UniTask.Delay(TimeSpan.FromSeconds(Constants.DIALOG_DURATION));
+                await UIManager.Instance.SetBattleText($"You are challenged by {trainer.Name}!");
+                await UIManager.Instance.SetBattleText($"{trainer.Name} sent out {pokemon.Name}!");
             }
             else
             {
-                UIManager.SetBattleText($"A wild {pokemon.Species.Name} appeared!");
-                await UniTask.Delay(TimeSpan.FromSeconds(Constants.DIALOG_DURATION));
+                await UIManager.Instance.SetBattleText($"A wild {pokemon.Species.Name} appeared!");
             }
             
-            UIManager.SetBattleText("");
-            _battleFsm.ChangeState(BattleState.PlayerDecision.ToString());
+            UIManager.Instance.SetBattleText("");
+            _battleFsm.ChangeState(BattleStateType.PlayerDecision.ToString());
+        }
+
+        public override void ExitState()
+        {
+            UIManager.Instance.SetPanelVisible(true);
         }
     }
 }

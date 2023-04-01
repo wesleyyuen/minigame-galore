@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using MEC;
-using TurnBasedRPG;
+using Cysharp.Threading.Tasks;
 using TurnBasedRPG.UI;
 
 public class UseItemAction : ITurnAction
@@ -17,19 +14,13 @@ public class UseItemAction : ITurnAction
         _item = item;
     }
 
-    public IEnumerator<float> DoAction(Pokemon owner, Pokemon target, Action<BattleResult> callback)
+    public async UniTask<BattleResult> DoAction(Pokemon owner, Pokemon target)
     {
-        // Debug.Log(_item.Name);
-        UIManager.SetBattleText($"{_trainer.Name} uses {_item.Name}!");
-        yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
+        await UIManager.Instance.SetBattleText($"{_trainer.Name} uses {_item.Name}!");
 
-        var battleResult = BattleResult.Unresolved;
-        var itemCoroutine = Timing.RunCoroutine(_item.Use(_trainer, owner, target, result => {
-            battleResult = result;
-            _trainer.ConsumeItem(_item);
-        }));
-        yield return Timing.WaitUntilDone(itemCoroutine);
+        var battleResult = await _item.Use(_trainer, owner, target);
+        _trainer.ConsumeItem(_item);
 
-        callback?.Invoke(battleResult);
+        return battleResult;
     }
 }

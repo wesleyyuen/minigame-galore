@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using Zenject;
 
@@ -9,6 +9,7 @@ namespace TurnBasedRPG.UI
 {
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance {get; private set;}
     private static TextMeshProUGUI _battleText;
     [SerializeField] private PokemonInfoUIHandler _myPokemonHandler;
     [SerializeField] private PokemonInfoUIHandler _theirPokemonHandler;
@@ -34,6 +35,19 @@ public class UIManager : MonoBehaviour
     }
 
     private void Awake()
+    {
+        // Singleton
+        if (Instance != null && Instance != this) 
+        { 
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        } 
+    }
+
+    private void Start()
     {
         // TODO: avoid hardcode path
         _battleText = transform.Find("MainBattleScreen/BottomPanel/Text")?.GetComponent<TextMeshProUGUI>();
@@ -90,13 +104,15 @@ public class UIManager : MonoBehaviour
         _pokemonSelectScreen.gameObject.SetActive(true);
     }
 
-    public void GetPlayerPokemonSelection(Action<ActionSelection> callback)
+    public async UniTask<int> GetPlayerPokemonSelection()
     {
         _isSelected = false;
         _cannotBack = true;
         SetupPokemonSelection();
         _pokemonSelectScreen.gameObject.SetActive(true);
-        StartCoroutine(_GetPlayerActionSelection_1v1(callback));
+        await _GetPlayerActionSelection_1v1();
+        _pokemonSelectScreen.gameObject.SetActive(false);
+        return _currentSelection.Index;
     }
 
     private void SetupPokemonSelection()
@@ -195,20 +211,22 @@ public class UIManager : MonoBehaviour
         _isSelected = true;
     }
 
-    public void GetPlayerActionSelection_1v1(Action<ActionSelection> callback)
+    public async UniTask<ActionSelection> GetPlayerActionSelection_1v1()
     {
         _isSelected = false;
         _panel.gameObject.SetActive(true);
         _moveGO.gameObject.SetActive(false);
         SetBattleText($"What will {_player.PokemonInBattle.Name} do?");
-        StartCoroutine(_GetPlayerActionSelection_1v1(callback));
+        await _GetPlayerActionSelection_1v1();
+        _pokemonSelectScreen.gameObject.SetActive(false);
+        SetPanelVisible(false);
+        return _currentSelection;
     }
 
-    private IEnumerator _GetPlayerActionSelection_1v1(Action<ActionSelection> callback)
+    private async UniTask _GetPlayerActionSelection_1v1()
     {
-        yield return new WaitUntil(() => _isSelected);
+        await UniTask.WaitUntil(() => _isSelected);
         _cannotBack = false;
-        callback(_currentSelection);
     }
 
     public void RemoveListener()
@@ -217,10 +235,14 @@ public class UIManager : MonoBehaviour
         _theirPokemonHandler.RemoveListener();
     }
 
-    // TODO: maybe a queue system + coroutine to handle oncoming text
-    public static void SetBattleText(string text)
+    public async UniTask SetBattleText(string text)
     {
-        if (_battleText != null) _battleText.text = text;
+        if (_battleText != null)
+        {
+            _battleText.text = text;
+            if (text == "") return;
+            await UniTask.Delay(TimeSpan.FromSeconds(Constants.DIALOG_DURATION));
+        }
     }
 
     public void SetPokemon(Trainer trainer)
@@ -261,10 +283,10 @@ public class UIManager : MonoBehaviour
         text.transform.parent.gameObject.SetActive(name != null && name != "");
     }
 
-    public void OnRoundStart()
+    public void SetPanelVisible(bool visible)
     {
         if (_panel == null) return;
-        _panel.gameObject.SetActive(false);
+        _panel.gameObject.SetActive(visible);
     }
 }
 

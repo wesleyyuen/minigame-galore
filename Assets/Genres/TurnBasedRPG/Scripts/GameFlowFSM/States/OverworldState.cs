@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using MEC;
+using Cysharp.Threading.Tasks;
 using TurnBasedRPG;
 
 public sealed class OverworldState : MonoState
@@ -26,22 +26,22 @@ public sealed class OverworldState : MonoState
         _rb = stateMachine.player.gameObject.GetComponent<Rigidbody2D>();
     }
 
-    public override void UpdateState()
+    public override async void UpdateState()
     {
         if (_isMoving || !_canMove) return;
         Vector3 input = _input.GetDirectionalInputVector();
         if (input == Vector3.zero) return;
 
         // Prioritized x-axis movements
-        if (input.x > 0) Timing.RunCoroutine(_Move(Vector2.right));
-        else if (input.x < 0) Timing.RunCoroutine(_Move(Vector2.left));
-        else if (input.y > 0) Timing.RunCoroutine(_Move(Vector2.up));
-        else if (input.y < 0) Timing.RunCoroutine(_Move(Vector2.down));
+        if (input.x > 0) await Move(Vector2.right);
+        else if (input.x < 0) await Move(Vector2.left);
+        else if (input.y > 0) await Move(Vector2.up);
+        else if (input.y < 0) await Move(Vector2.down);
     }
 
-    private IEnumerator<float> _Move(Vector2 dir)
+    private async UniTask Move(Vector2 dir)
     {
-        if (!IsWalkable(dir)) yield break;
+        if (!IsWalkable(dir)) return;
 
         Vector3 from = _rb.position;
         Vector3 to = _rb.position + dir;
@@ -50,7 +50,7 @@ public sealed class OverworldState : MonoState
 
         for (float t = 0f; t < 1f; t += Time.deltaTime / Constants.CHARACTER_MOVEMENT_DURATION) {
             _rb.position = Vector3.Lerp(from, to, t);
-            yield return Timing.WaitForOneFrame;
+            await UniTask.NextFrame();
         }
 
         _rb.position = to;

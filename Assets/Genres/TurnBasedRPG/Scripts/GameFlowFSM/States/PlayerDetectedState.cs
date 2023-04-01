@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using MEC;
+using Cysharp.Threading.Tasks;
 using TurnBasedRPG;
 
 public sealed class PlayerDetectedState : MonoState
@@ -16,7 +15,7 @@ public sealed class PlayerDetectedState : MonoState
         _fsm = stateMachine;
     }
 
-    public override void EnterState(System.Object args = null)
+    public override async void EnterState(System.Object args = null)
     {
         var trainerTransform = (Transform) args;
         if (trainerTransform.TryGetComponent<TrainerModel>(out var trainerModel))
@@ -27,12 +26,13 @@ public sealed class PlayerDetectedState : MonoState
         {
             _trainerRB = rigidbody2D;
         }
-        Timing.RunCoroutine(_Sequence());
+        
+        await StartDetectedSequence();
     }
 
-    private IEnumerator<float> _Sequence()
+    private async UniTask StartDetectedSequence()
     {
-        yield return Timing.WaitForSeconds(2);
+        await UniTask.Delay(TimeSpan.FromSeconds(2));
 
         Vector3 dir = (_fsm.player.transform.position - (Vector3) _trainerRB.position).normalized;
         Vector3 from = _trainerRB.position;
@@ -41,12 +41,12 @@ public sealed class PlayerDetectedState : MonoState
 
         for (float t = 0f; t < 1f; t += Time.deltaTime / Constants.CHARACTER_MOVEMENT_DURATION / dist) {
             _trainerRB.position = Vector3.Lerp(from, to, t);
-            yield return Timing.WaitForOneFrame;
+            await UniTask.NextFrame();
         }
 
         _trainerRB.position = to;
 
-        yield return Timing.WaitForSeconds(2);
+        await UniTask.Delay(TimeSpan.FromSeconds(2));
 
         // TODO: trainer walk to closest tile to player
         _fsm.ChangeState(GameState.TrainerBattle.ToString(), _trainer.TrainerInfo);

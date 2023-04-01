@@ -1,48 +1,58 @@
-using System.Collections;
-using System.Collections.Generic;
 using TurnBasedRPG.States;
 using TurnBasedRPG.UI;
-using UnityEngine;
 
 namespace TurnBasedRPG
 {
-    public class BattleStateMachine : MonoStateMachine
+    public class BattleStateMachine : StateMachine
     {
-        public UIManager UIManager { get; private set; }
         public PlayerModel PlayerModel { get; private set; }
+        public RoundController RoundController { get; private set; }
+        public BattleState ParentState { get; private set;}
         public BattleResult BattleResult { get; set; }
         public BattleInfo BattleInfo { get; set; }
-        protected override MonoState GetInitialState() => GetState(BattleState.NonBattle.ToString());
+        protected override State GetInitialState() => GetState(BattleStateType.NonBattle.ToString());
 
-        public void Awake()
+        public BattleStateMachine(RoundController roundController)
         {
-            States.Add(BattleState.NonBattle.ToString(), new NonBattleState(this));
-            States.Add(BattleState.EnterBattle.ToString(), new EnterBattleState(this));
+            RoundController = roundController;
+        }
+
+        public override void Initialize()
+        {
+            States.Add(BattleStateType.NonBattle.ToString(), new NonBattleState(this));
+            States.Add(BattleStateType.EnterBattle.ToString(), new EnterBattleState(this));
+            States.Add(BattleStateType.PlayerDecision.ToString(), new PlayerDecisionState(this));
+            States.Add(BattleStateType.OpponentDecision.ToString(), new OpponentDecisionState(this));
+            States.Add(BattleStateType.ExecuteTurn.ToString(), new ExecuteTurnState(this));
+            States.Add(BattleStateType.ExitBattle.ToString(), new ExitBattleState(this));
+
+            base.Initialize();
         }
         
-        public void Init(UIManager uiManager, PlayerModel playerModel)
+        public void Init(
+            BattleState state,
+            PlayerModel playerModel,
+            RoundController roundController)
         {
-            UIManager = uiManager;
+            ParentState = state;
             PlayerModel = playerModel;
+            RoundController = roundController;
         }
         
         public void StartBattle(BattleInfo battleInfo)
         {
             BattleInfo = battleInfo;
-            ChangeState(BattleState.EnterBattle.ToString());
+            ChangeState(BattleStateType.EnterBattle.ToString());
         }
     }
 
-    public enum BattleState
+    public enum BattleStateType
     {
         NonBattle,
         EnterBattle,
         PlayerDecision,
         OpponentDecision,
-        PlayerTurn,
-        OpponentTurn,
-        PlayerChooseNextMon,
-        OpponentChooseNextMon,
+        ExecuteTurn,
         ExitBattle
     }
 }

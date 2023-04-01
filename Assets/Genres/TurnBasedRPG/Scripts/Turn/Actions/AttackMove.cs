@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using TurnBasedRPG;
 using TurnBasedRPG.UI;
-using MEC;
 using Effectiveness = TurnBasedRPG.Constants.DAMAGE_EFFECTIVENESS;
 
 
@@ -13,44 +12,38 @@ public class AttackMove : Move
     [SerializeField] private float _damage;
     public float Damage { get {return _damage;} set {} }
 
-    public override IEnumerator<float> DoAction(Pokemon owner, Pokemon target, Action<BattleResult> callback)
+    public override async UniTask<BattleResult> DoAction(Pokemon owner, Pokemon target)
     {
-        UIManager.SetBattleText($"{owner.Name} uses {name}!");
-
-        yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
+        await UIManager.Instance.SetBattleText($"{owner.Name} uses {name}!");
 
         float multiplier;
         var effectiveness = Type.GetDamageEffectiveness(owner.Species, target.Species, out multiplier);
 
         target.TakeDamage(_damage * multiplier, owner);
 
-        yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
+        await UniTask.Delay(TimeSpan.FromSeconds(Constants.DIALOG_DURATION));
 
         if (effectiveness != Effectiveness.Neutral)
         {
             switch (effectiveness)
             {
                 default: case Effectiveness.Neutral: break;
-                case Effectiveness.Immune: UIManager.SetBattleText("It has no effect..."); break;
-                case Effectiveness.Resist: UIManager.SetBattleText("It is not very effective..."); break;
-                case Effectiveness.Super: UIManager.SetBattleText("It is super effective!"); break;
+                case Effectiveness.Immune: await UIManager.Instance.SetBattleText("It has no effect..."); break;
+                case Effectiveness.Resist: await UIManager.Instance.SetBattleText("It is not very effective..."); break;
+                case Effectiveness.Super: await UIManager.Instance.SetBattleText("It is super effective!"); break;
             }
-
-            yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
         }
 
         if (target.IsFainted)
         {
-            UIManager.SetBattleText($"{target.Name} fainted!");
-            yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
+            await UIManager.Instance.SetBattleText($"{target.Name} fainted!");
         }
 
         if (owner.IsFainted)
         {
-            UIManager.SetBattleText($"{owner.Name} fainted!");
-            yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
+            await UIManager.Instance.SetBattleText($"{owner.Name} fainted!");
         }
 
-        callback?.Invoke(BattleResult.Unresolved);
+        return BattleResult.Unresolved;
     }
 }

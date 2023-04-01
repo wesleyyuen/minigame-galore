@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using MEC;
+using Cysharp.Threading.Tasks;
 
 public class HealthBar : MonoBehaviour
 {
@@ -12,31 +11,29 @@ public class HealthBar : MonoBehaviour
     private readonly (float cutoff, string color) YELLOW_BAR = (0.5f, "#EBA734");
     private readonly (float cutoff, string color) RED_BAR = (0.2f, "#E46342");
     private float? _originalSizeDelta = null;
-    private CoroutineHandle _handle;
 
-    public void SetHealthBar(float percentage, bool isInstant = false)
+    public async void SetHealthBar(float percentage, bool isInstant = false)
     {
         if (!_originalSizeDelta.HasValue) _originalSizeDelta = _bar.sizeDelta.x;
         _barImage = _bar.GetComponent<Image>();
-        Timing.KillCoroutines(_handle);
-        _handle = Timing.RunCoroutine(_SetHealthBar(percentage, isInstant));
+        await SetBarLength(percentage, isInstant);
     }
 
-    private IEnumerator<float> _SetHealthBar(float percentage, bool isInstant)
+    private async UniTask SetBarLength(float percentage, bool isInstant)
     {
         if (isInstant)
         {
             _bar.sizeDelta = new Vector2(_originalSizeDelta.Value * percentage, _bar.sizeDelta.y);
             SetBarColor(_bar.sizeDelta.x / _originalSizeDelta.Value);
-            yield break;
+            return;
         }
 
         float previousLength = _bar.sizeDelta.x;
-        for (float t = 0f; t < 1f; t += Timing.DeltaTime / ANIMATION_DURATION) {
+        for (float t = 0f; t < 1f; t += Time.deltaTime / ANIMATION_DURATION) {
             _bar.sizeDelta = new Vector2(Mathf.SmoothStep(previousLength, _originalSizeDelta.Value * percentage, t) , _bar.sizeDelta.y);
             SetBarColor(_bar.sizeDelta.x / _originalSizeDelta.Value);
 
-            yield return Timing.WaitForOneFrame;
+            await UniTask.NextFrame();
         }
     }
 

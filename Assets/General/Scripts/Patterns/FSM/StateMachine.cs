@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using Zenject;
 
 public abstract class StateMachine : IInitializable, ITickable, IFixedTickable
@@ -27,7 +28,11 @@ public abstract class StateMachine : IInitializable, ITickable, IFixedTickable
     // TODO: try to remove Object args
     public virtual void ChangeState(string newStateName, System.Object args = null)
     {
-        if (!States.TryGetValue(newStateName, out var newState)) return;
+        if (!States.TryGetValue(newStateName, out var newState))
+        {
+            Debug.LogError($"Cannot find {newStateName} in the available states!");
+            return;
+        }
         
         _currentState.ExitState();
         _currentState = newState;

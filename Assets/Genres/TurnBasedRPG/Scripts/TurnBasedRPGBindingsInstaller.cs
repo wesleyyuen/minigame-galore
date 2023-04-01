@@ -11,6 +11,7 @@ public class TurnBasedRPGBindingsInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<TurnBasedRPGInput>().AsSingle();
         Container.BindInterfacesAndSelfTo<RoundController>().AsSingle();
+        Container.BindInterfacesAndSelfTo<BattleStateMachine>().AsSingle();
         // TODO: setup settings configuration to control how to load
         if (true)
         {

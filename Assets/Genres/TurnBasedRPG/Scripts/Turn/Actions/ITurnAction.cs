@@ -1,8 +1,7 @@
-using System;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public interface ITurnAction
 {
     int Priority {get;}
-    abstract IEnumerator<float> DoAction(Pokemon Owner, Pokemon Target, Action<BattleResult> callback);
+    abstract UniTask<BattleResult> DoAction(Pokemon Owner, Pokemon Target);
 }

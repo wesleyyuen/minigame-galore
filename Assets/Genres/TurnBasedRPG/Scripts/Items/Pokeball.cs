@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using MEC;
-using TurnBasedRPG;
+using Cysharp.Threading.Tasks;
 using TurnBasedRPG.UI;
 
 [CreateAssetMenu(fileName = "Pokeball", menuName = "ScriptableObjects/TurnBasedRPG/Items/Pokeball")]
@@ -11,12 +8,11 @@ public class Pokeball : Item
     [SerializeField] private float _catchMultiplier;
     public float CatchMultiplier => _catchMultiplier;
 
-    public override IEnumerator<float> Use(Trainer user, Pokemon owner, Pokemon target, Action<BattleResult> callback)
+    public override async UniTask<BattleResult> Use(Trainer user, Pokemon owner, Pokemon target)
     {
         if (target.Trainer != null)
         {
-            UIManager.SetBattleText("You cannot catch someone's pokemon!");
-            yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
+            await UIManager.Instance.SetBattleText("You cannot catch someone's pokemon!");
         }
         else
         {
@@ -24,18 +20,15 @@ public class Pokeball : Item
             if (UnityEngine.Random.Range(0, 1) < (1 - targetHealthPercent))
             {
                 user.AddCreature(target);
-                UIManager.SetBattleText($"You caught {target.Name}!");
-                yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
-                callback?.Invoke(BattleResult.WildPokemonCaught);
-                yield break;
+                await UIManager.Instance.SetBattleText($"You caught {target.Name}!");
+                return BattleResult.WildPokemonCaught;
             }
             else
             {
-                UIManager.SetBattleText($"{target.Name} broke free!");
-                yield return Timing.WaitForSeconds(Constants.DIALOG_DURATION);
+                await UIManager.Instance.SetBattleText($"{target.Name} broke free!");
             }
         }
 
-        callback?.Invoke(BattleResult.Unresolved);
+        return BattleResult.Unresolved;
     }
 }

@@ -1,42 +1,34 @@
-using System;
-using System.Collections.Generic;
-using MEC;
+using Cysharp.Threading.Tasks;
 
 public class RoundController
 {
     private readonly PriorityQueue<Turn> _turns = new PriorityQueue<Turn>();
-    private Action<BattleResult> _roundEndCallback;
+    private BattleResult _result;
 
-    public void StartRound(IEnumerable<Turn> turns, Action<BattleResult> callback)
+    public void AddTurn(Turn turn)
     {
-        // Enqueue
-        foreach (Turn turn in turns)
-        {
-            _turns.Add(turn);
-        }
-
-        _roundEndCallback = callback;
-
-        Timing.RunCoroutine(_StartRound());
+        if (turn == null) return;
+        _turns.Add(turn);
     }
 
-    private IEnumerator<float> _StartRound()
+    public async UniTask<BattleResult> StartRound()
     {
-        BattleResult result = BattleResult.Unresolved;
+        _result = BattleResult.Unresolved;
+
         while (_turns.Count != 0)
         {
             // Process Turn
             Turn turn = _turns.Pop();
-            yield return Timing.WaitUntilDone(turn.DoAction(r => {
-                result = r;
-            }));
+            _result = await turn.DoAction();
 
-            if (result != BattleResult.Unresolved) break;
-            result = EvaluateBattleResult(turn);
-            if (result != BattleResult.Unresolved || AnyPokemonFainted(turn)) break;
+            if (_result != BattleResult.Unresolved) break;
+            _result = EvaluateBattleResult(turn);
+            if (_result != BattleResult.Unresolved || AnyPokemonFainted(turn)) break;
         }
 
-        EndRound(result);
+        EndRound();
+
+        return _result;
     }
 
     private BattleResult EvaluateBattleResult(Turn turn)
@@ -66,9 +58,8 @@ public class RoundController
             || (turn.Target != null && turn.Target.IsFainted);
     }
 
-    public void EndRound(BattleResult result)
+    public void EndRound()
     {
         _turns.Clear();
-        _roundEndCallback?.Invoke(result);
     }
 }

@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public abstract class Item : ScriptableObject, IEquatable<Item>
 {
     public string Name => name;
-    public abstract IEnumerator<float> Use(Trainer user, Pokemon owner, Pokemon target, Action<BattleResult> callback);
+    public abstract UniTask<BattleResult> Use(Trainer user, Pokemon owner, Pokemon target);
 
     public bool Equals(Item other)
     {

@@ -27,7 +27,11 @@ public abstract class MonoStateMachine : MonoBehaviour
     // TODO: try to remove Object args
     public virtual void ChangeState(string newStateName, object args = null)
     {
-        if (!States.TryGetValue(newStateName, out var newState)) return;
+        if (!States.TryGetValue(newStateName, out var newState))
+        {
+            Debug.LogError($"Cannot find {newStateName} in the available states!");
+            return;
+        }
         
         _currentState.ExitState();
         _currentState = newState;

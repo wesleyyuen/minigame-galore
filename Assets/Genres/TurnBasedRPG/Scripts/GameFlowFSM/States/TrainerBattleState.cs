@@ -1,31 +1,30 @@
 using TurnBasedRPG;
+using TurnBasedRPG.UI;
 
 public sealed class TrainerBattleState : BattleState
 {
     public TrainerBattleState(
         GameStateMachine stateMachine,
-        RoundController roundController) : base(GameState.TrainerBattle.ToString(), stateMachine, roundController)
+        RoundController roundController,
+        BattleStateMachine battleStateMachine) : base(GameState.TrainerBattle.ToString(), stateMachine, roundController, battleStateMachine)
     {
     }
 
     public override void EnterState(object args = null)
     {
-        // _battleInfo.Add(_fsm.player.TrainerInfo.GetFirstAvailablePokemon());
-
-        if (args is Trainer trainer)
-        {
-            // _battleInfo.Add(trainer.GetFirstAvailablePokemon());
-            //
-            // _fsm.player.TrainerInfo.IChooseYou();
-            // trainer.IChooseYou();
-            //
-            // _uiManager.SetPokemon(_fsm.player.TrainerInfo);
-            // _uiManager.SetPokemon(trainer);
-            
-            _battleFSM.Init(_uiManager, _fsm.player);
-            StartTrainerBattle(trainer);
-        }
+        if (args is not Trainer trainer) return;
         
-        // _fsm.StartCoroutine(_StartBattle());
+        _battleInfo.Add(_fsm.player.TrainerInfo.GetFirstAvailablePokemon());
+
+        _battleInfo.Add(trainer.GetFirstAvailablePokemon());
+        
+        _fsm.player.TrainerInfo.IChooseYou();
+        trainer.IChooseYou();
+        
+        UIManager.Instance.SetPokemon(_fsm.player.TrainerInfo);
+        UIManager.Instance.SetPokemon(trainer);
+        
+        _battleFSM.Init(this, _fsm.player, _roundController);
+        _battleFSM.StartBattle(_battleInfo);
     }
 }

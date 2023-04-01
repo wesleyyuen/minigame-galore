@@ -1,41 +1,40 @@
 using System;
-using MEC;
+using Cysharp.Threading.Tasks;
 
 public class Turn : IComparable<Turn>
 {
-    public int Index;
     public Pokemon Owner;
     public Pokemon Target;
     public ITurnAction Action;
 
     public Turn(
-        int index,
         Pokemon owner,
         ITurnAction action,
         Pokemon target
     )
     {
-        Index = index;
         Owner = owner;
         Action = action;
         Target = target;
     }
 
-    public CoroutineHandle DoAction(Action<BattleResult> callback)
+    public async UniTask<BattleResult> DoAction(Action<BattleResult> callback = null)
     {
-        return Timing.RunCoroutine(Action.DoAction(Owner, Target, callback));
+        var result = await Action.DoAction(Owner, Target);
+        return result;
     }
 
-    // Higher Priority goes first
+    // Higher Priority goes first, in descending order
     public int CompareTo(Turn other)
     {
-        var actionPriority = Action.Priority.CompareTo(other.Action.Priority);
+        var actionPriority = other.Action.Priority.CompareTo(Action.Priority);
         if (actionPriority == 0)
         {
-            var speedPriority = Owner.Stat.Speed.CompareTo(other.Owner.Stat.Speed);
+            var speedPriority = other.Owner.Stat.Speed.CompareTo(Owner.Stat.Speed);
+            // UnityEngine.Debug.Log($"{Owner.Name}'s {Owner.Stat.Speed} vs {other.Owner.Name}'s {other.Owner.Stat.Speed}");
             if (speedPriority == 0)
             {
-                return GetHashCode().CompareTo(other.GetHashCode());
+                return other.GetHashCode().CompareTo(GetHashCode());
             }
             return speedPriority;
         }
