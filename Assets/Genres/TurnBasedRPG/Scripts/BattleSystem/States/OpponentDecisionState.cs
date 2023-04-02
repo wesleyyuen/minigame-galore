@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using TurnBasedRPG.UI;
 
 namespace TurnBasedRPG
@@ -16,7 +15,7 @@ namespace TurnBasedRPG
     
         public override void EnterState(object args = null)
         {
-            var player = _battleFsm.PlayerModel.TrainerInfo;
+            var player = _battleFsm.BattleInfo.Pokemons.First(kvp => kvp.Value.IsPlayer).Value;
             var (pokemon, trainer) = _battleFsm.BattleInfo.GetOpponent(player);
             var target = player.PokemonInBattle;
 

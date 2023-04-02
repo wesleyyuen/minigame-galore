@@ -216,7 +216,7 @@ public class UIManager : MonoBehaviour
         _isSelected = false;
         _panel.gameObject.SetActive(true);
         _moveGO.gameObject.SetActive(false);
-        SetBattleText($"What will {_player.PokemonInBattle.Name} do?");
+        SetBattleTextInstantly($"What will {_player.PokemonInBattle.Name} do?");
         await _GetPlayerActionSelection_1v1();
         _pokemonSelectScreen.gameObject.SetActive(false);
         SetPanelVisible(false);
@@ -233,6 +233,14 @@ public class UIManager : MonoBehaviour
     {
         _myPokemonHandler.RemoveListener();
         _theirPokemonHandler.RemoveListener();
+    }
+
+    public void SetBattleTextInstantly(string text)
+    {
+        if (_battleText != null)
+        {
+            _battleText.text = text;
+        }
     }
 
     public async UniTask SetBattleText(string text)

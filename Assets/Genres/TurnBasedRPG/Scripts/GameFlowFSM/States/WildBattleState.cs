@@ -22,7 +22,7 @@ public sealed class WildBattleState : BattleState
         UIManager.Instance.SetPokemon(_fsm.player.TrainerInfo);
         UIManager.Instance.SetPokemon(pokemon);
         
-        _battleFSM.Init(this, _fsm.player, _roundController);
+        _battleFSM.Init(this);
 
         _battleFSM.StartBattle(_battleInfo);
     }

@@ -1,3 +1,4 @@
+using System.Linq;
 using TurnBasedRPG.UI;
 
 namespace TurnBasedRPG.States
@@ -18,7 +19,8 @@ namespace TurnBasedRPG.States
             UIManager.Instance.SetPanelVisible(false);
             UIManager.Instance.OnBattleStart();
 
-            var (pokemon, trainer) = _battleFsm.BattleInfo.GetOpponent(_battleFsm.PlayerModel.TrainerInfo);
+            var player = _battleFsm.BattleInfo.Pokemons.First(kvp => kvp.Value.IsPlayer).Value;
+            var (pokemon, trainer) = _battleFsm.BattleInfo.GetOpponent(player);
             if (trainer != null)
             {
                 await UIManager.Instance.SetBattleText($"You are challenged by {trainer.Name}!");
@@ -29,7 +31,7 @@ namespace TurnBasedRPG.States
                 await UIManager.Instance.SetBattleText($"A wild {pokemon.Species.Name} appeared!");
             }
             
-            UIManager.Instance.SetBattleText("");
+            UIManager.Instance.SetBattleTextInstantly("");
             _battleFsm.ChangeState(BattleStateType.PlayerDecision.ToString());
         }
 

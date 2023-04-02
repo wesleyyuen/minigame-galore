@@ -1,15 +1,13 @@
 using TurnBasedRPG.States;
-using TurnBasedRPG.UI;
 
 namespace TurnBasedRPG
 {
     public class BattleStateMachine : StateMachine
     {
-        public PlayerModel PlayerModel { get; private set; }
-        public RoundController RoundController { get; private set; }
-        public BattleState ParentState { get; private set;}
+        public RoundController RoundController { get; }
         public BattleResult BattleResult { get; set; }
         public BattleInfo BattleInfo { get; set; }
+        private BattleState _parentState;
         protected override State GetInitialState() => GetState(BattleStateType.NonBattle.ToString());
 
         public BattleStateMachine(RoundController roundController)
@@ -29,20 +27,25 @@ namespace TurnBasedRPG
             base.Initialize();
         }
         
-        public void Init(
-            BattleState state,
-            PlayerModel playerModel,
-            RoundController roundController)
+        public void Init(BattleState state)
         {
-            ParentState = state;
-            PlayerModel = playerModel;
-            RoundController = roundController;
+            _parentState = state;
         }
         
         public void StartBattle(BattleInfo battleInfo)
         {
             BattleInfo = battleInfo;
             ChangeState(BattleStateType.EnterBattle.ToString());
+        }
+
+        public void EndBattle()
+        {
+            _parentState.EndBattle();
+        }
+
+        public void BlackOut()
+        {
+            _parentState.BlackOut();
         }
     }
 

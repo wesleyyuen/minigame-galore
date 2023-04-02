@@ -565,7 +565,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6601fc9914c215e41b72e2324701780c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  battleScreen: {fileID: 1928410575}
   player: {fileID: 1719248163}
   unwalkableLayers:
     serializedVersion: 2
@@ -778,11 +777,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!225 &1928410575 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 7645918870732750400, guid: 2ecb4892dd2d14c66b07bbd1abfbd373, type: 3}
-  m_PrefabInstance: {fileID: 7645918868821117839}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7393141582662580494
 PrefabInstance:
   m_ObjectHideFlags: 0

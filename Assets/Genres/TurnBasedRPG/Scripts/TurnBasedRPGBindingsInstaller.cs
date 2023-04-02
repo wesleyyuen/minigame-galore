@@ -17,10 +17,10 @@ public class TurnBasedRPGBindingsInstaller : MonoInstaller
         {
             Container.BindInterfacesAndSelfTo<PokemonSpeciesSOLoader>().AsSingle();
         }
-        else
-        {
-            Container.BindInterfacesAndSelfTo<PokemonSpeciesJSONLoader>().AsSingle();
-        }
+        // else
+        // {
+        //     Container.BindInterfacesAndSelfTo<PokemonSpeciesJSONLoader>().AsSingle();
+        // }
         Container.BindInterfacesAndSelfTo<PokemonSpeciesManifest>().AsSingle();
         Container.BindInterfacesAndSelfTo<WildEncounterController>().AsSingle();
     }
