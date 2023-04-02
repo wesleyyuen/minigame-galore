@@ -2,10 +2,9 @@ public class State
 {
     public string Name { get; }
 
-    protected State(string name, StateMachine stateMachine)
+    protected State(string name)
     {
         Name = name;
-        // stateMachine casted to child class
     }
 
     public virtual void EnterState(object args = null) {}

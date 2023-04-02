@@ -1,60 +1,62 @@
 using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
-using TurnBasedRPG;
 
-public sealed class PlayerDetectedState : MonoState
+namespace TurnBasedRPG
 {
-    private GameStateMachine _fsm;
-    private Rigidbody2D _trainerRB;
-    private TrainerModel _trainer;
-
-    public PlayerDetectedState(
-        GameStateMachine stateMachine) : base(GameState.PlayerDetected.ToString(), stateMachine)
+    public sealed class PlayerDetectedState : MonoState
     {
-        _fsm = stateMachine;
-    }
+        private GameStateMachine _fsm;
+        private Rigidbody2D _trainerRB;
+        private TrainerModel _trainer;
 
-    public override async void EnterState(System.Object args = null)
-    {
-        var trainerTransform = (Transform) args;
-        if (trainerTransform.TryGetComponent<TrainerModel>(out var trainerModel))
+        public PlayerDetectedState(
+            GameStateMachine stateMachine) : base(GameState.PlayerDetected.ToString(), stateMachine)
         {
-            _trainer = trainerModel;
+            _fsm = stateMachine;
         }
-        if (trainerTransform.TryGetComponent<Rigidbody2D>(out var rigidbody2D))
+
+        public override async void EnterState(System.Object args = null)
         {
-            _trainerRB = rigidbody2D;
-        }
-        
-        await StartDetectedSequence();
-    }
-
-    private async UniTask StartDetectedSequence()
-    {
-        await UniTask.Delay(TimeSpan.FromSeconds(2));
-
-        Vector3 dir = (_fsm.player.transform.position - (Vector3) _trainerRB.position).normalized;
-        Vector3 from = _trainerRB.position;
-        Vector3 to = _fsm.player.transform.position - dir;
-        float dist = Vector3.Distance(from, to);
-
-        for (float t = 0f; t < 1f; t += Time.deltaTime / Constants.CHARACTER_MOVEMENT_DURATION / dist) {
-            _trainerRB.position = Vector3.Lerp(from, to, t);
-            await UniTask.NextFrame();
+            var trainerTransform = (Transform) args;
+            if (trainerTransform.TryGetComponent<TrainerModel>(out var trainerModel))
+            {
+                _trainer = trainerModel;
+            }
+            if (trainerTransform.TryGetComponent<Rigidbody2D>(out var rigidbody2D))
+            {
+                _trainerRB = rigidbody2D;
+            }
+            
+            await StartDetectedSequence();
         }
 
-        _trainerRB.position = to;
+        private async UniTask StartDetectedSequence()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
 
-        await UniTask.Delay(TimeSpan.FromSeconds(2));
+            Vector3 dir = (_fsm.player.transform.position - (Vector3) _trainerRB.position).normalized;
+            Vector3 from = _trainerRB.position;
+            Vector3 to = _fsm.player.transform.position - dir;
+            float dist = Vector3.Distance(from, to);
 
-        // TODO: trainer walk to closest tile to player
-        _fsm.ChangeState(GameState.TrainerBattle.ToString(), _trainer.TrainerInfo);
-    }
+            for (float t = 0f; t < 1f; t += Time.deltaTime / Constants.CHARACTER_MOVEMENT_DURATION / dist) {
+                _trainerRB.position = Vector3.Lerp(from, to, t);
+                await UniTask.NextFrame();
+            }
 
-    public override void ExitState()
-    {
-        _trainerRB = null;
-        _trainer = null;
+            _trainerRB.position = to;
+
+            await UniTask.Delay(TimeSpan.FromSeconds(2));
+
+            // TODO: trainer walk to closest tile to player
+            _fsm.ChangeState(GameState.TrainerBattle.ToString(), _trainer.TrainerInfo);
+        }
+
+        public override void ExitState()
+        {
+            _trainerRB = null;
+            _trainer = null;
+        }
     }
 }

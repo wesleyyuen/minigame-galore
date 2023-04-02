@@ -888,6 +888,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7393141583220235424, guid: 5ffcafed9e5974a2c9b54d26aa37c1c8, type: 3}
+      propertyPath: m_Name
+      value: Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7393141583220235452, guid: 5ffcafed9e5974a2c9b54d26aa37c1c8, type: 3}
+      propertyPath: _pokemons.Array.data[0]._name
+      value: Shelly
+      objectReference: {fileID: 0}
     - target: {fileID: 7393141583220235455, guid: 5ffcafed9e5974a2c9b54d26aa37c1c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9

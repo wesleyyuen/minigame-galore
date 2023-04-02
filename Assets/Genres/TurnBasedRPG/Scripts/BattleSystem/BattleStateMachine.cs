@@ -1,5 +1,3 @@
-using TurnBasedRPG.States;
-
 namespace TurnBasedRPG
 {
     public class BattleStateMachine : StateMachine
@@ -10,21 +8,17 @@ namespace TurnBasedRPG
         private BattleState _parentState;
         protected override State GetInitialState() => GetState(BattleStateType.NonBattle.ToString());
 
+        // TODO: try remove circular dependency between states and BattleStateMachine
         public BattleStateMachine(RoundController roundController)
         {
             RoundController = roundController;
-        }
 
-        public override void Initialize()
-        {
             States.Add(BattleStateType.NonBattle.ToString(), new NonBattleState(this));
             States.Add(BattleStateType.EnterBattle.ToString(), new EnterBattleState(this));
             States.Add(BattleStateType.PlayerDecision.ToString(), new PlayerDecisionState(this));
             States.Add(BattleStateType.OpponentDecision.ToString(), new OpponentDecisionState(this));
             States.Add(BattleStateType.ExecuteTurn.ToString(), new ExecuteTurnState(this));
             States.Add(BattleStateType.ExitBattle.ToString(), new ExitBattleState(this));
-
-            base.Initialize();
         }
         
         public void Init(BattleState state)

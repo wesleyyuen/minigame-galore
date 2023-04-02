@@ -1,19 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrainerNPCModel : TrainerModel
+namespace TurnBasedRPG
 {
-    public TrainerNPCAI AI;
-    [SerializeField] private List<Pokemon> _pokemons = new List<Pokemon>();
-
-    protected override void Start()
+    public class TrainerNPCModel : TrainerModel
     {
-        base.Start();
+        public TrainerNPCAI AI;
+        [SerializeField] private List<Pokemon> _pokemons = new List<Pokemon>();
 
-        foreach (var pkmn in _pokemons)
+        protected override void Start()
         {
-            TrainerInfo.AddCreature(new Pokemon(pkmn.Species, pkmn.Level));
+            base.Start();
+
+            foreach (var pkmn in _pokemons)
+            {
+                TrainerInfo.AddCreature(new Pokemon(pkmn.Species, pkmn.Level, pkmn.Name));
+            }
         }
     }
 }

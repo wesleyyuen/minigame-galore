@@ -8,9 +8,9 @@ namespace TurnBasedRPG
         private BattleStateMachine _battleFsm;
             
         public PlayerDecisionState(
-            StateMachine stateMachine) : base(BattleStateType.PlayerDecision.ToString(), stateMachine)
+            BattleStateMachine stateMachine) : base(BattleStateType.PlayerDecision.ToString())
         {
-            _battleFsm = (BattleStateMachine) stateMachine;
+            _battleFsm = stateMachine;
         }
     
         public override async void EnterState(object args = null)

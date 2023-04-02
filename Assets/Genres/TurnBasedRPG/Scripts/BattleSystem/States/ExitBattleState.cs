@@ -8,9 +8,9 @@ namespace TurnBasedRPG
         private BattleStateMachine _battleFsm;
             
         public ExitBattleState(
-            StateMachine stateMachine) : base(BattleStateType.ExitBattle.ToString(), stateMachine)
+            BattleStateMachine stateMachine) : base(BattleStateType.ExitBattle.ToString())
         {
-            _battleFsm = (BattleStateMachine) stateMachine;
+            _battleFsm = stateMachine;
         }
     
         public override async void EnterState(object args = null)
@@ -40,7 +40,7 @@ namespace TurnBasedRPG
                         _battleFsm.ChangeState(BattleStateType.PlayerDecision.ToString());
                         return;
                     }
-                    
+
                     await UIManager.Instance.SetBattleText("You ran away safely!");
                     _battleFsm.EndBattle();
                     break;

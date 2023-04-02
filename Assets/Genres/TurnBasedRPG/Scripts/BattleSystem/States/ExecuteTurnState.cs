@@ -1,8 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TurnBasedRPG.UI;
-
 namespace TurnBasedRPG
 {
     public sealed class ExecuteTurnState : State
@@ -10,9 +5,9 @@ namespace TurnBasedRPG
         private BattleStateMachine _battleFsm;
             
         public ExecuteTurnState(
-            StateMachine stateMachine) : base(BattleStateType.ExecuteTurn.ToString(), stateMachine)
+            BattleStateMachine stateMachine) : base(BattleStateType.ExecuteTurn.ToString())
         {
-            _battleFsm = (BattleStateMachine) stateMachine;
+            _battleFsm = stateMachine;
         }
     
         public override async void EnterState(object args = null)

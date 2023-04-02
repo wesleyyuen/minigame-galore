@@ -1,82 +1,80 @@
 using System.Linq;
 using System.Collections.Generic;
-using TurnBasedRPG;
 using TurnBasedRPG.UI;
 
-public class BattleState : MonoState
+namespace TurnBasedRPG
 {
-    protected GameStateMachine _fsm;
-    protected RoundController _roundController;
-    protected BattleInfo _battleInfo = new BattleInfo();
-
-    protected BattleStateMachine _battleFSM;
-
-    public BattleState(
-        string name,
-        GameStateMachine stateMachine,
-        RoundController roundController,
-        BattleStateMachine battleStateMachine) : base(name, stateMachine)
+    public class BattleState : MonoState
     {
-        _fsm = stateMachine;
-        _roundController = roundController;
-        _battleFSM = battleStateMachine;
-    }
+        protected GameStateMachine _fsm;
+        protected BattleInfo _battleInfo = new BattleInfo();
+        protected BattleStateMachine _battleFSM;
 
-    public void EndBattle()
-    {
-        _fsm.ChangeState(GameState.Overworld.ToString());
-    }
-
-    public void BlackOut()
-    {
-        _fsm.ChangeState(GameState.PlayerBlackOut.ToString());
-    }
-
-    public override void ExitState()
-    {
-        UIManager.Instance.RemoveListener();
-        _battleInfo.Clear();
-    }
-}
-
-public class BattleInfo
-{
-    // 1v1 Only for simplicity sake
-    // Wild pokemon will have null trainer value
-    public Dictionary<Pokemon, Trainer> Pokemons = new Dictionary<Pokemon, Trainer>();
-    public bool IsTrainerBattle => Pokemons.All(kvp => kvp.Value != null);
-
-    public void Add(Pokemon pokemon)
-    {
-        Pokemons.Add(pokemon, pokemon.Trainer);
-    }
-
-    public KeyValuePair<Pokemon, Trainer> GetOpponent(Trainer trainer)
-    {
-        return Pokemons.FirstOrDefault(kvp => kvp.Value != trainer);
-    }
-
-    public void Clear()
-    {
-        foreach (var (pkmn, trainer) in Pokemons)
+        public BattleState(
+            string name,
+            GameStateMachine stateMachine,
+            BattleStateMachine battleStateMachine) : base(name, stateMachine)
         {
-            if (trainer == null) continue;
-
-            // reset enemy health
-            if (!trainer.IsPlayer) trainer.FullHealTeam();
-
-            trainer.IChooseYou(null);
+            _fsm = stateMachine;
+            _battleFSM = battleStateMachine;
         }
 
-        Pokemons.Clear();
-    }
-}
+        public void EndBattle()
+        {
+            _fsm.ChangeState(GameState.Overworld.ToString());
+        }
 
-public enum BattleResult
-{
-    Unresolved,
-    PlayerWon,
-    PlayerLost,
-    PlayerRan,
-    WildPokemonCaught
+        public void BlackOut()
+        {
+            _fsm.ChangeState(GameState.PlayerBlackOut.ToString());
+        }
+
+        public override void ExitState()
+        {
+            UIManager.Instance.RemoveListener();
+            _battleInfo.Clear();
+        }
+    }
+
+    public class BattleInfo
+    {
+        // 1v1 Only for simplicity sake
+        // Wild pokemon will have null trainer value
+        public Dictionary<Pokemon, Trainer> Pokemons = new Dictionary<Pokemon, Trainer>();
+        public bool IsTrainerBattle => Pokemons.All(kvp => kvp.Value != null);
+
+        public void Add(Pokemon pokemon)
+        {
+            Pokemons.Add(pokemon, pokemon.Trainer);
+        }
+
+        public KeyValuePair<Pokemon, Trainer> GetOpponent(Trainer trainer)
+        {
+            return Pokemons.FirstOrDefault(kvp => kvp.Value != trainer);
+        }
+
+        public void Clear()
+        {
+            foreach (var (pkmn, trainer) in Pokemons)
+            {
+                if (trainer == null) continue;
+
+                // reset enemy health
+                if (!trainer.IsPlayer) trainer.FullHealTeam();
+
+                trainer.IChooseYou(null);
+            }
+
+            Pokemons.Clear();
+        }
+    }
+
+    public enum BattleResult
+    {
+        Unresolved,
+        PlayerWon,
+        PlayerLost,
+        PlayerRan,
+        WildPokemonCaught
+    }
 }

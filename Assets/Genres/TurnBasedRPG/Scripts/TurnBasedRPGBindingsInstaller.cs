@@ -1,27 +1,31 @@
 using Zenject;
-using TurnBasedRPG;
+using TurnBasedRPG.Input;
 
-public class TurnBasedRPGBindingsInstaller : MonoInstaller
+namespace TurnBasedRPG
 {
-    public override void InstallBindings()
+    public class TurnBasedRPGBindingsInstaller : MonoInstaller
     {
-        SignalBusInstaller.Install(Container);
-        
-        Container.DeclareSignal<PlayerDetectedSignal>();
-
-        Container.BindInterfacesAndSelfTo<TurnBasedRPGInput>().AsSingle();
-        Container.BindInterfacesAndSelfTo<RoundController>().AsSingle();
-        Container.BindInterfacesAndSelfTo<BattleStateMachine>().AsSingle();
-        // TODO: setup settings configuration to control how to load
-        if (true)
+        public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<PokemonSpeciesSOLoader>().AsSingle();
+            SignalBusInstaller.Install(Container);
+            
+            Container.DeclareSignal<PlayerDetectedSignal>();
+
+            Container.BindInterfacesAndSelfTo<TurnBasedRPGInput>().AsSingle();
+            Container.BindInterfacesAndSelfTo<RoundController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<BattleStateMachine>().AsSingle();
+
+            // TODO: setup settings configuration to control how to load
+            if (true)
+            {
+                Container.BindInterfacesAndSelfTo<PokemonSpeciesSOLoader>().AsSingle();
+            }
+            // else
+            // {
+            //     Container.BindInterfacesAndSelfTo<PokemonSpeciesJSONLoader>().AsSingle();
+            // }
+            Container.BindInterfacesAndSelfTo<PokemonSpeciesManifest>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WildEncounterController>().AsSingle();
         }
-        // else
-        // {
-        //     Container.BindInterfacesAndSelfTo<PokemonSpeciesJSONLoader>().AsSingle();
-        // }
-        Container.BindInterfacesAndSelfTo<PokemonSpeciesManifest>().AsSingle();
-        Container.BindInterfacesAndSelfTo<WildEncounterController>().AsSingle();
     }
 }

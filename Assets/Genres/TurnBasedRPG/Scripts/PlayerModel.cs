@@ -1,23 +1,26 @@
 using Zenject;
 
-public class PlayerModel : TrainerModel
+namespace TurnBasedRPG
 {
-    private PokemonSpeciesManifest _pokemonManifest;
-
-    [Inject]
-    public void Init(PokemonSpeciesManifest pokemonManifest)
+    public class PlayerModel : TrainerModel
     {
-        _pokemonManifest = pokemonManifest;
-    }
+        private PokemonSpeciesManifest _pokemonManifest;
 
-    protected override void Awake()
-    {
-        TrainerInfo = new Trainer(_name, this, true);
-    }
+        [Inject]
+        public void Init(PokemonSpeciesManifest pokemonManifest)
+        {
+            _pokemonManifest = pokemonManifest;
+        }
 
-    protected override void Start()
-    {
-        base.Start();
-        TrainerInfo.AddCreature(new Pokemon(_pokemonManifest.GetRandomCreatureSpecies(), 6, null));
+        protected override void Awake()
+        {
+            TrainerInfo = new Trainer(_name, this, true);
+        }
+
+        protected override void Start()
+        {
+            base.Start();
+            TrainerInfo.AddCreature(new Pokemon(_pokemonManifest.GetRandomCreatureSpecies(), 6));
+        }
     }
 }

@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
 
-public abstract class StateMachine : IInitializable, ITickable, IFixedTickable
+public abstract class StateMachine : IInitializable, ITickable, IFixedTickable, IDisposable
 {
     private State _currentState;
     protected string CurrentState => _currentState.Name;
@@ -23,6 +24,10 @@ public abstract class StateMachine : IInitializable, ITickable, IFixedTickable
     public virtual void FixedTick()
     {
         _currentState?.FixedUpdateState();
+    }
+
+    public virtual void Dispose()
+    {
     }
 
     // TODO: try to remove Object args

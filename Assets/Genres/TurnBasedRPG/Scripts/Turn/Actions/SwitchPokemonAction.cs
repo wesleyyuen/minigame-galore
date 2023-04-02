@@ -2,27 +2,30 @@ using System;
 using Cysharp.Threading.Tasks;
 using TurnBasedRPG.UI;
 
-public class SwitchPokemon : ITurnAction
+namespace TurnBasedRPG
 {
-    // Switching Always goes first
-    public int Priority => int.MaxValue;
-    private Action _uiCallback;
-
-    public SwitchPokemon(Action uiCallback)
+    public class SwitchPokemon : ITurnAction
     {
-        _uiCallback = uiCallback;
-    }
+        // Switching Always goes first
+        public int Priority => int.MaxValue;
+        private Action _uiCallback;
 
-    public async UniTask<BattleResult> DoAction(Pokemon owner, Pokemon target)
-    {
-        if (owner != null)
+        public SwitchPokemon(Action uiCallback)
         {
-            await UIManager.Instance.SetBattleText($"Come back, {owner.Name}!");
+            _uiCallback = uiCallback;
         }
 
-        _uiCallback?.Invoke();
-        await UIManager.Instance.SetBattleText($"Go, {target.Name}!");
+        public async UniTask<BattleResult> DoAction(Pokemon owner, Pokemon target)
+        {
+            if (owner != null)
+            {
+                await UIManager.Instance.SetBattleText($"Come back, {owner.Name}!");
+            }
 
-        return BattleResult.Unresolved;
+            _uiCallback?.Invoke();
+            await UIManager.Instance.SetBattleText($"Go, {target.Name}!");
+
+            return BattleResult.Unresolved;
+        }
     }
 }

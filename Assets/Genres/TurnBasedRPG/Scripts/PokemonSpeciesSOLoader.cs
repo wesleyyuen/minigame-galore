@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class PokemonSpeciesSOLoader : IPokemonSpeciesLoader
+namespace TurnBasedRPG
 {
-    public IEnumerable<PokemonSpecies> Load(string path)
+    public class PokemonSpeciesSOLoader : IPokemonSpeciesLoader
     {
-        return Resources.LoadAll(path, typeof(PokemonSpecies)).Cast<PokemonSpecies>();
-    }
+        public IEnumerable<PokemonSpecies> Load(string path)
+        {
+            return Resources.LoadAll(path, typeof(PokemonSpecies)).Cast<PokemonSpecies>();
+        }
 
-    public async IAsyncEnumerable<PokemonSpecies> AsyncLoad(string path)
-    {
-        yield break;
-        throw new System.NotImplementedException();
+        public async IAsyncEnumerable<PokemonSpecies> AsyncLoad(string path)
+        {
+            yield break;
+            throw new System.NotImplementedException();
+        }
     }
 }

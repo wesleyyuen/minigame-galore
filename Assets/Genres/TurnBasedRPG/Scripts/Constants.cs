@@ -23,6 +23,7 @@ namespace TurnBasedRPG
         }
 
         public const float CHARACTER_MOVEMENT_DURATION = 0.15f;
+        public const float RANDOM_ENCOUNTER_CHANCE = 15f; 
         public const float DIALOG_DURATION = 1.25f;
     }
 

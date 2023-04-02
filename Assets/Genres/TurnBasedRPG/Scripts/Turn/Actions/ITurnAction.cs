@@ -1,7 +1,10 @@
 using Cysharp.Threading.Tasks;
 
-public interface ITurnAction
+namespace TurnBasedRPG
 {
-    int Priority {get;}
-    abstract UniTask<BattleResult> DoAction(Pokemon Owner, Pokemon Target);
+    public interface ITurnAction
+    {
+        int Priority {get;}
+        abstract UniTask<BattleResult> DoAction(Pokemon Owner, Pokemon Target);
+    }
 }

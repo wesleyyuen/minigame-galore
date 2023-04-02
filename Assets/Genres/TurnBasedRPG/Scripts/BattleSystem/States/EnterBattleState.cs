@@ -1,16 +1,16 @@
 using System.Linq;
 using TurnBasedRPG.UI;
 
-namespace TurnBasedRPG.States
+namespace TurnBasedRPG
 {
     public sealed class EnterBattleState : State
     {
         private BattleStateMachine _battleFsm;
         
         public EnterBattleState(
-            StateMachine stateMachine) : base(BattleStateType.EnterBattle.ToString(), stateMachine)
+            BattleStateMachine stateMachine) : base(BattleStateType.EnterBattle.ToString())
         {
-            _battleFsm = (BattleStateMachine) stateMachine;
+            _battleFsm = stateMachine;
         }
 
         public override async void EnterState(object args = null)

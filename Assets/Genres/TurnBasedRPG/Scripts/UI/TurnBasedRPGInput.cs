@@ -2,51 +2,54 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class TurnBasedRPGInput : InputMaster.ITurnBasedRPGActions
+namespace TurnBasedRPG.Input
 {
-    private InputMaster _inputMaster;
-
-    public TurnBasedRPGInput()
+    public class TurnBasedRPGInput : InputMaster.ITurnBasedRPGActions
     {
-        if (_inputMaster == null) {
-            _inputMaster = new InputMaster();
+        private InputMaster _inputMaster;
 
-            _inputMaster.TurnBasedRPG.SetCallbacks(this);
+        public TurnBasedRPGInput()
+        {
+            if (_inputMaster == null) {
+                _inputMaster = new InputMaster();
 
-            _inputMaster.TurnBasedRPG.Enable();
+                _inputMaster.TurnBasedRPG.SetCallbacks(this);
+
+                _inputMaster.TurnBasedRPG.Enable();
+            }
         }
-    }
 
-    ~TurnBasedRPGInput()
-    {
-        _inputMaster.TurnBasedRPG.Disable();
-    }
+        ~TurnBasedRPGInput()
+        {
+            _inputMaster.TurnBasedRPG.Disable();
+        }
 
-    public void OnPause(InputAction.CallbackContext context)
-    {
-        if (!context.started) return;
-        _inputMaster.TurnBasedRPG.Disable();
-        MainMenu.ToMainMenu();
-    }
+        public void OnPause(InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
+            _inputMaster.TurnBasedRPG.Disable();
+            MainMenu.ToMainMenu();
+        }
 
-    public event Action Event_Back;
-    public void OnBack(InputAction.CallbackContext context)
-    {
-        if (context.started) Event_Back?.Invoke();
-    }
+        public event Action Event_Back;
+        public void OnBack(InputAction.CallbackContext context)
+        {
+            if (context.started) Event_Back?.Invoke();
+        }
 
-    public void OnPlayerMovement(InputAction.CallbackContext context)
-    {
-    }
+        public void OnPlayerMovement(InputAction.CallbackContext context)
+        {
+        }
 
-    public Vector2 GetDirectionalInputVector()
-    {
-        return _inputMaster.TurnBasedRPG.PlayerMovement.ReadValue<Vector2>();
-    }
+        public Vector2 GetDirectionalInputVector()
+        {
+            return _inputMaster.TurnBasedRPG.PlayerMovement.ReadValue<Vector2>();
+        }
 
-    public event Action Event_PlayerInteract;
-    public void OnPlayerInteract(InputAction.CallbackContext context)
-    {
-        if (context.started) Event_PlayerInteract?.Invoke();
+        public event Action Event_PlayerInteract;
+        public void OnPlayerInteract(InputAction.CallbackContext context)
+        {
+            if (context.started) Event_PlayerInteract?.Invoke();
+        }
     }
 }

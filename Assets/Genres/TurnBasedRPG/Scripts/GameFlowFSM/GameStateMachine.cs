@@ -1,6 +1,6 @@
-using System.Linq;
 using UnityEngine;
 using Zenject;
+using TurnBasedRPG.Input;
 
 namespace TurnBasedRPG
 {
@@ -26,9 +26,9 @@ namespace TurnBasedRPG
             _signalBus = signalBus;
             
             // Create all states
-            States.Add(GameState.Overworld.ToString(), new OverworldState(this, input, pokemonManifest, wildEncounterController));
-            States.Add(GameState.WildBattle.ToString(), new WildBattleState(this, roundController, battleStateMachine));
-            States.Add(GameState.TrainerBattle.ToString(), new TrainerBattleState(this, roundController, battleStateMachine));
+            States.Add(GameState.Overworld.ToString(), new OverworldState(this, input, wildEncounterController));
+            States.Add(GameState.WildBattle.ToString(), new WildBattleState(this, battleStateMachine));
+            States.Add(GameState.TrainerBattle.ToString(), new TrainerBattleState(this, battleStateMachine));
             States.Add(GameState.PlayerBlackOut.ToString(), new PlayerBlackOutState(this));
             States.Add(GameState.PlayerDetected.ToString(), new PlayerDetectedState(this));
         }

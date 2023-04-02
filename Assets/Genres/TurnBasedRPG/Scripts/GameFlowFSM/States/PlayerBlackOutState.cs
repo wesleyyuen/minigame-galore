@@ -1,30 +1,30 @@
-using UnityEngine;
-using TurnBasedRPG;
-
-public sealed class PlayerBlackOutState : MonoState
+namespace TurnBasedRPG
 {
-    private GameStateMachine _fsm;
-
-    public PlayerBlackOutState(
-        GameStateMachine stateMachine) : base(GameState.PlayerBlackOut.ToString(), stateMachine)
+    public sealed class PlayerBlackOutState : MonoState
     {
-        _fsm = stateMachine;
-    }
+        private GameStateMachine _fsm;
 
-    public override void EnterState(System.Object args = null)
-    {
-        // TODO: Screen White Fade In
-
-        // TODO: Set Player position to pkmn center
-        // TODO: Heal Trainer
-
-        foreach (var pokemon in _fsm.player.TrainerInfo.PokemonsOnHand)
+        public PlayerBlackOutState(
+            GameStateMachine stateMachine) : base(GameState.PlayerBlackOut.ToString(), stateMachine)
         {
-            pokemon.Heal(pokemon.Stat.HP);
+            _fsm = stateMachine;
         }
 
-        // TODO: Screen White Fade Out
+        public override void EnterState(System.Object args = null)
+        {
+            // TODO: Screen White Fade In
 
-        _fsm.ChangeState(GameState.Overworld.ToString());
+            // TODO: Set Player position to pkmn center
+            
+            // Full Heal Trainer
+            foreach (var pokemon in _fsm.player.TrainerInfo.PokemonsOnHand)
+            {
+                pokemon.Heal(pokemon.Stat.HP);
+            }
+
+            // TODO: Screen White Fade Out
+
+            _fsm.ChangeState(GameState.Overworld.ToString());
+        }
     }
 }

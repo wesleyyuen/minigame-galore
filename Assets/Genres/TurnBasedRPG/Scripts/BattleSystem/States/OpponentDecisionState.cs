@@ -6,11 +6,20 @@ namespace TurnBasedRPG
     public sealed class OpponentDecisionState : State
     {
         private BattleStateMachine _battleFsm;
+        private RoundController _roundController;
             
+        // public OpponentDecisionState(
+        //     BattleStateMachine stateMachine,
+        //     RoundController roundController) : base(BattleStateType.OpponentDecision.ToString())
+        // {
+        //     _battleFsm = stateMachine;
+        //     _roundController = roundController;
+        // }
+
         public OpponentDecisionState(
-            StateMachine stateMachine) : base(BattleStateType.OpponentDecision.ToString(), stateMachine)
+            BattleStateMachine stateMachine) : base(BattleStateType.OpponentDecision.ToString())
         {
-            _battleFsm = (BattleStateMachine) stateMachine;
+            _battleFsm = stateMachine;
         }
     
         public override void EnterState(object args = null)

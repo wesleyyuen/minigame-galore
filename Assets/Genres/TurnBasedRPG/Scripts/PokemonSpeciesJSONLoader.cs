@@ -3,28 +3,31 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokemonSpeciesJSONLoader : IPokemonSpeciesLoader
+namespace TurnBasedRPG
 {
-    public IEnumerable<PokemonSpecies> Load(string path)
+    public class PokemonSpeciesJSONLoader : IPokemonSpeciesLoader
     {
-        var results = Enumerable.Empty<PokemonSpecies>();
-        if (!Directory.Exists(path))
+        public IEnumerable<PokemonSpecies> Load(string path)
         {
-            Debug.LogWarning($"Cannot find a directory at path {path}!");
+            var results = Enumerable.Empty<PokemonSpecies>();
+            if (!Directory.Exists(path))
+            {
+                Debug.LogWarning($"Cannot find a directory at path {path}!");
+                return results;
+            }
+
+            foreach (string file in Directory.EnumerateFiles(path, "*.json"))
+            {
+                results.Append(JsonUtility.FromJson<PokemonSpecies>(File.ReadAllText(file)));
+            }
+            
             return results;
         }
 
-        foreach (string file in Directory.EnumerateFiles(path, "*.json"))
+        public async IAsyncEnumerable<PokemonSpecies> AsyncLoad(string path)
         {
-            results.Append(JsonUtility.FromJson<PokemonSpecies>(File.ReadAllText(file)));
+            yield break;
+            throw new System.NotImplementedException();
         }
-        
-        return results;
-    }
-
-    public async IAsyncEnumerable<PokemonSpecies> AsyncLoad(string path)
-    {
-        yield break;
-        throw new System.NotImplementedException();
     }
 }

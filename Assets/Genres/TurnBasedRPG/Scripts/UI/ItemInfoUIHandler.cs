@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ItemInfoUIHandler : MonoBehaviour
+namespace TurnBasedRPG.UI
 {
-    [SerializeField] private TextMeshProUGUI _name;
-    [SerializeField] private TextMeshProUGUI _amount;
-
-    public void SetUI(Item item, int amount)
+    public class ItemInfoUIHandler : MonoBehaviour
     {
-        _name.text = item.Name;
-        _amount.text = amount.ToString();
+        [SerializeField] private TextMeshProUGUI _name;
+        [SerializeField] private TextMeshProUGUI _amount;
+
+        public void SetUI(Item item, int amount)
+        {
+            _name.text = item.Name;
+            _amount.text = amount.ToString();
+        }
     }
 }

@@ -2,33 +2,36 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using TurnBasedRPG.UI;
 
-[CreateAssetMenu(fileName = "Pokeball", menuName = "ScriptableObjects/TurnBasedRPG/Items/Pokeball")]
-public class Pokeball : Item
+namespace TurnBasedRPG
 {
-    [SerializeField] private float _catchMultiplier;
-    public float CatchMultiplier => _catchMultiplier;
-
-    public override async UniTask<BattleResult> Use(Trainer user, Pokemon owner, Pokemon target)
+    [CreateAssetMenu(fileName = "Pokeball", menuName = "ScriptableObjects/TurnBasedRPG/Items/Pokeball")]
+    public class Pokeball : Item
     {
-        if (target.Trainer != null)
+        [SerializeField] private float _catchMultiplier;
+        public float CatchMultiplier => _catchMultiplier;
+
+        public override async UniTask<BattleResult> Use(Trainer user, Pokemon owner, Pokemon target)
         {
-            await UIManager.Instance.SetBattleText("You cannot catch someone's pokemon!");
-        }
-        else
-        {
-            float targetHealthPercent = target.CurrentHP / target.Stat.HP;
-            if (UnityEngine.Random.Range(0, 1) < (1 - targetHealthPercent))
+            if (target.Trainer != null)
             {
-                user.AddCreature(target);
-                await UIManager.Instance.SetBattleText($"You caught {target.Name}!");
-                return BattleResult.WildPokemonCaught;
+                await UIManager.Instance.SetBattleText("You cannot catch someone's pokemon!");
             }
             else
             {
-                await UIManager.Instance.SetBattleText($"{target.Name} broke free!");
+                float targetHealthPercent = target.CurrentHP / target.Stat.HP;
+                if (UnityEngine.Random.Range(0, 1) < (1 - targetHealthPercent))
+                {
+                    user.AddCreature(target);
+                    await UIManager.Instance.SetBattleText($"You caught {target.Name}!");
+                    return BattleResult.WildPokemonCaught;
+                }
+                else
+                {
+                    await UIManager.Instance.SetBattleText($"{target.Name} broke free!");
+                }
             }
-        }
 
-        return BattleResult.Unresolved;
+            return BattleResult.Unresolved;
+        }
     }
 }
