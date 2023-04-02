@@ -9,11 +9,11 @@ public class HitHandler : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.transform == transform.parent || other.isTrigger) return;
+        if (_currentHitInfo == null || other.transform == transform.parent || other.isTrigger) return;
 
         if (other.TryGetComponent<FighterStateMachine>(out var target))
         {
-            if (_currentHitInfo != null) target.TakeDamage(_currentHitInfo);
+            target.TakeDamage(_currentHitInfo);
             _currentHitInfo = null;
         }
     }

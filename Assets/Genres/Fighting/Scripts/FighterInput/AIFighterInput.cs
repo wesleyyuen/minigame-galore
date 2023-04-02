@@ -27,21 +27,24 @@ public class AIFighterInput : FighterInput
     public override Vector2 GetDirectionalInputVector()
     {
         return Vector2.zero;
-        return new Vector2(Random.Range(-1f, 1f), 0f);
+        // return new Vector2(Random.Range(-1f, 1f), 0f);
     }
 
     public override bool HasJumpInput()
     {
-        return Random.Range(0f, 1f) > 0.5f;
+        return false;
+        // return Random.Range(0f, 1f) > 0.5f;
     }
 
     public override bool HasAttackInput()
     {
-        return Random.Range(0f, 1f) > 0.5f;
+        return false;
+        // return Random.Range(0f, 1f) > 0.5f;
     }
 
     public override bool HasBlockInput()
     {
-        return Random.Range(0f, 1f) > 0.5f;
+        return false;
+        // return Random.Range(0f, 1f) > 0.5f;
     }
 }

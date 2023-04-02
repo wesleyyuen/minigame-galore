@@ -1,6 +1,7 @@
 using System.Linq;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 using Zenject;
 
 namespace Fighting
@@ -9,6 +10,8 @@ namespace Fighting
     {
         [Header("Input")]
         [SerializeField] private FighterInput _fighterInput;
+        [Header("Collision")]
+        [SerializeField] private Collider2D _collisionBlocker;
         
         [Header("Movement")]
         [SerializeField] private float _movementSpeed; // TODO: factor out to a scriptable object fightertype data class
@@ -35,6 +38,7 @@ namespace Fighting
         private float _jumpBuffer;
         private float _coyoteTimer;
         private bool _startsJumping;
+        private bool _letRigidbodyMove;
 
         private FighterInput _input;
 
@@ -57,6 +61,8 @@ namespace Fighting
 
             _input = (FighterInput) ScriptableObject.Instantiate(_fighterInput);
             _input.SetSelf(this);
+
+            Physics2D.IgnoreCollision(_collider, _collisionBlocker, true);
         }
 
         private void OnEnable()
@@ -93,12 +99,16 @@ namespace Fighting
             _jumpBuffer -= Time.deltaTime;
 
             _input.Update();
+
             base.Update();
         }
 
         protected override void FixedUpdate()
         {
             HandleGroundCollision();
+
+            if (_letRigidbodyMove) return;
+
             HandleMovement();
             HandleJump();
 
@@ -108,7 +118,7 @@ namespace Fighting
         public void TakeDamage(HitInfo hit)
         {
             _currentHealth = Mathf.Max(0, _currentHealth - hit.Damage);
-            ApplyKnockback((Vector2)transform.position - hit.Origin, 1500);
+            ApplyKnockback((Vector2)transform.position - hit.Origin, 25);
         }
 
         private void HandleGroundCollision()
@@ -123,8 +133,10 @@ namespace Fighting
 
         private void HandleMovement()
         {
-            Vector3 input = _input.GetDirectionalInputVector();
-            _rb.velocity = new Vector2(input.x * _movementSpeed, _rb.velocity.y);
+            var horizontalInput = _input.GetDirectionalInputVector().x;
+            _rb.velocity = new Vector2(horizontalInput * _movementSpeed, _rb.velocity.y);
+
+            // Turning
             if (_rb.velocity.x < 0 && transform.localScale.x > 0) transform.localScale = new Vector3(-1, 1, 1);
             else if (_rb.velocity.x > 0 && transform.localScale.x < 0) transform.localScale = new Vector3(1, 1, 1);
         }
@@ -156,7 +168,11 @@ namespace Fighting
                 _rb.velocity += Vector2.up * _jumpVelocity;
             }
 
-            if (_rb.velocity.y < 0f)
+            if (isGrounded)
+            {
+                _rb.gravityScale = 1f;
+            }
+            else if (_rb.velocity.y < 0f)
             {
                 _rb.gravityScale = _fallGravity;
             }
@@ -164,32 +180,31 @@ namespace Fighting
             {
                 _rb.gravityScale = _lowJumpGravity;
             }
-            else
-            {
-                _rb.gravityScale = 1f;
-            }
         }
 
         private void OnAttack()
         {
-            Debug.Log("Attack");
             // TODO: check state, or better yet, make attack state check itself
             ChangeState(GameState.Attack.ToString());
         }
 
         private void OnBlock()
         {
-            Debug.Log("Block");
+            // Debug.Log("Block");
         }
 
-        private void ApplyKnockback(Vector2 dir, float force)
+        private async void ApplyKnockback(Vector2 dir, float force)
         {
-            // _animations.EnablePlayerTurning(false, time);
-            // LetRigidbodyMoveForSeconds(time == 0 ? 0.1f : time);
-            // Timing.RunCoroutine(Utility._ChangeVariableAfterDelay<float>(e => _rb.drag = e, time == 0 ? 0.1f : time, force * 0.1f, 1f).CancelWith(gameObject));
-            
+            _rb.drag = 5f;
+            _letRigidbodyMove = true;
+
             _rb.velocity = Vector2.zero;
             _rb.AddForce(dir.normalized * force, ForceMode2D.Impulse);
+
+            await UniTask.Delay(TimeSpan.FromSeconds(0.125f));
+
+            _rb.drag = 1f;
+            _letRigidbodyMove = false;
         }
     }
 
