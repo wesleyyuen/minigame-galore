@@ -10,8 +10,6 @@ namespace TurnBasedRPG
         public PlayerModel player;
         public LayerMask unwalkableLayers;
 
-        private SignalBus _signalBus;
-
         protected override MonoState GetInitialState() => GetState(GameState.Overworld.ToString());
 
         [Inject]
@@ -22,26 +20,13 @@ namespace TurnBasedRPG
             RoundController roundController,
             BattleStateMachine battleStateMachine,
             WildEncounterController wildEncounterController)
-        {
-            _signalBus = signalBus;
-            
+        {            
             // Create all states
-            States.Add(GameState.Overworld.ToString(), new OverworldState(this, input, wildEncounterController));
+            States.Add(GameState.Overworld.ToString(), new OverworldState(this, signalBus, input, wildEncounterController));
             States.Add(GameState.WildBattle.ToString(), new WildBattleState(this, battleStateMachine));
             States.Add(GameState.TrainerBattle.ToString(), new TrainerBattleState(this, battleStateMachine));
             States.Add(GameState.PlayerBlackOut.ToString(), new PlayerBlackOutState(this));
             States.Add(GameState.PlayerDetected.ToString(), new PlayerDetectedState(this));
-        }
-
-        private void OnEnable()
-        {
-            _signalBus.Subscribe<PlayerDetectedSignal>(x => OnPlayerDetected(x.Detector));
-        }
-        
-        private void OnPlayerDetected(Transform detector)
-        {
-            if (CurrentState != GameState.Overworld.ToString()) return;
-            ChangeState(GameState.PlayerDetected.ToString(), detector);
         }
     }
 

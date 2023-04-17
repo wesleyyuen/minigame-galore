@@ -6,7 +6,7 @@ namespace TurnBasedRPG
     public sealed class OpponentDecisionState : State
     {
         private BattleStateMachine _battleFsm;
-        private RoundController _roundController;
+        // private RoundController _roundController;
             
         // public OpponentDecisionState(
         //     BattleStateMachine stateMachine,

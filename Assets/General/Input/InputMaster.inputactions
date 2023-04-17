@@ -303,12 +303,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "Smash",
                     "type": "Button",
                     "id": "630437b5-4b34-4682-89ea-35bdc0e1aa06",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press,SlowTap",
                     "initialStateCheck": false
                 },
                 {
@@ -406,7 +406,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "Smash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

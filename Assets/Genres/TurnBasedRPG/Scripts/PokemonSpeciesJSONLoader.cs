@@ -2,6 +2,8 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 
 namespace TurnBasedRPG
 {
@@ -24,10 +26,11 @@ namespace TurnBasedRPG
             return results;
         }
 
-        public async IAsyncEnumerable<PokemonSpecies> AsyncLoad(string path)
+        public IUniTaskAsyncEnumerable<PokemonSpecies> LoadAsync(string path)
         {
-            yield break;
-            throw new System.NotImplementedException();
+            return UniTaskAsyncEnumerable.Create<PokemonSpecies>(async (writer, token) => {
+                await UniTask.Yield();
+            });
         }
     }
 }

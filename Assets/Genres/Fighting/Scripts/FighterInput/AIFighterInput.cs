@@ -20,7 +20,7 @@ public class AIFighterInput : FighterInput
     public override void Update()
     {
         if (HasJumpInput()) Jump();
-        if (HasAttackInput()) Attack();
+        if (HasSmashInput()) Smash();
         if (HasBlockInput()) Block();
     }
 
@@ -36,7 +36,7 @@ public class AIFighterInput : FighterInput
         // return Random.Range(0f, 1f) > 0.5f;
     }
 
-    public override bool HasAttackInput()
+    public override bool HasSmashInput()
     {
         return false;
         // return Random.Range(0f, 1f) > 0.5f;

@@ -21,15 +21,19 @@ public abstract class FighterInput : ScriptableObject
     public abstract bool HasJumpInput();
 #endregion
 
-#region Attack
-    public event Action Event_Attack;
-    protected virtual void Attack() => Event_Attack?.Invoke();
-    public abstract bool HasAttackInput();
+#region Smash
+    public event Action Event_Smash;
+    protected virtual void Smash() => Event_Smash?.Invoke();
+    public event Action<float> Event_ChargeSmash;
+    protected virtual void ChargeSmash(float chargedDuration) => Event_ChargeSmash?.Invoke(chargedDuration);
+    public abstract bool HasSmashInput();
 #endregion
 
 #region Block
     public event Action Event_Block;
     protected virtual void Block() => Event_Block?.Invoke();
+    public event Action Event_BlockCanceled;
+    protected virtual void CancelBlock() => Event_BlockCanceled?.Invoke();
     public abstract bool HasBlockInput();
 #endregion
 }

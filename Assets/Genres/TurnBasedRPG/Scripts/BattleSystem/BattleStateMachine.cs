@@ -13,7 +13,7 @@ namespace TurnBasedRPG
         {
             RoundController = roundController;
 
-            States.Add(BattleStateType.NonBattle.ToString(), new NonBattleState(this));
+            States.Add(BattleStateType.NonBattle.ToString(), new NonBattleState());
             States.Add(BattleStateType.EnterBattle.ToString(), new EnterBattleState(this));
             States.Add(BattleStateType.PlayerDecision.ToString(), new PlayerDecisionState(this));
             States.Add(BattleStateType.OpponentDecision.ToString(), new OpponentDecisionState(this));

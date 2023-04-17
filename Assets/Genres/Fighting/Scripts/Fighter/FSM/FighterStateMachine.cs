@@ -1,4 +1,3 @@
-using System.Linq;
 using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
@@ -12,206 +11,159 @@ namespace Fighting
         [SerializeField] private FighterInput _fighterInput;
         [Header("Collision")]
         [SerializeField] private Collider2D _collisionBlocker;
-        
-        [Header("Movement")]
-        [SerializeField] private float _movementSpeed; // TODO: factor out to a scriptable object fightertype data class
+        public bool IsGrounded {get; private set;}
+        [Header("Data")]
+        [SerializeField] private FighterData _data;
+        public FighterData Data => _data;
 
-        [Header("Jump")]
-        [SerializeField] private float _jumpVelocity;
-        [SerializeField] private float _fallGravity;
-        [SerializeField] private float _lowJumpGravity;
-        [SerializeField] private float _jumpBufferTime;
-        [SerializeField] private float _coyoteTime;
-        public bool isGrounded {get; private set;}
+        private int _stockCount = Constants.STOCK_COUNT;
+        private float _currentHealth = 0f;
+        protected override MonoState GetInitialState() => GetState(FighterState.Idle.ToString());
 
-        [Header("Health")]
-        [SerializeField] private float _maxHealth;
-        private float _currentHealth;
-        protected override MonoState GetInitialState() => GetState(GameState.Idle.ToString());
-
-        private Rigidbody2D _rb;
+        public Rigidbody2D Rigidbody {get; private set;}
+        public Animator Animator {get; private set;}
         private Collider2D _collider;
-        private Animator _animator;
         private HitHandler _hitHandler;
-        private Vector2 _leftGroundDetectionPoint, _rightGroundDetectionPoint;
-        private bool _canJump = true;
-        private float _jumpBuffer;
-        private float _coyoteTimer;
-        private bool _startsJumping;
         private bool _letRigidbodyMove;
+        private bool _isKnockedOut;
 
-        private FighterInput _input;
+        public FighterInput Input {get; private set;}
 
         [Inject]
         public void Init()
         {
-            _rb = GetComponent<Rigidbody2D>();
+            Animator = GetComponent<Animator>();
+            Rigidbody = GetComponent<Rigidbody2D>();
             _collider = GetComponent<Collider2D>();
-            _animator = GetComponent<Animator>();
             _hitHandler = GetComponentInChildren<HitHandler>();
-            _leftGroundDetectionPoint = new Vector2(_collider.bounds.min.x, _collider.bounds.min.y);
-            _rightGroundDetectionPoint = new Vector2(_collider.bounds.max.x, _collider.bounds.min.y);
-
-            _currentHealth = _maxHealth;
 
             // Create all states
-            States.Add(GameState.Idle.ToString(), new IdleState(this));
-            States.Add(GameState.Attack.ToString(), new AttackState(this, _animator, _hitHandler));
-            States.Add(GameState.Block.ToString(), new BlockState(this));
+            States.Add(FighterState.Idle.ToString(), new IdleState(this));
+            States.Add(FighterState.Smash.ToString(), new SmashState(this, _hitHandler));
+            States.Add(FighterState.Charge.ToString(), new ChargeState(this));
+            States.Add(FighterState.Block.ToString(), new BlockState(this));
 
-            _input = (FighterInput) ScriptableObject.Instantiate(_fighterInput);
-            _input.SetSelf(this);
+            // TODO: better way to handle indepedent input
+            Input = (FighterInput) ScriptableObject.Instantiate(_fighterInput);
+            Input.SetSelf(this);
 
             Physics2D.IgnoreCollision(_collider, _collisionBlocker, true);
         }
 
-        private void OnEnable()
-        {
-            _input.Event_Jump += OnJump;
-            _input.Event_JumpCanceled += OnJumpCanceled;
-            _input.Event_Attack += OnAttack;
-            _input.Event_Block += OnBlock;
-        }
-
-        private void OnDisable()
-        {
-            _input.Event_Jump -= OnJump;
-            _input.Event_JumpCanceled -= OnJumpCanceled;
-            _input.Event_Attack -= OnAttack;
-            _input.Event_Block -= OnBlock;
-        }
-
         protected override void Update()
         {
-            if (!_canJump) return;
+            if (_isKnockedOut) return;
 
-            // Coyote Time - allow late-input of jumps after touching the ground
-            if (isGrounded)
-            {
-                _coyoteTimer = _coyoteTime;
-            }
-            else
-            {
-                _coyoteTimer -= Time.deltaTime;
-            }
-
-            // Jump Buffering - allow pre-input of jumps before touching the ground
-            _jumpBuffer -= Time.deltaTime;
-
-            _input.Update();
+            Input.Update();
 
             base.Update();
         }
 
         protected override void FixedUpdate()
         {
+            if (_isKnockedOut) return;
+
             HandleGroundCollision();
 
             if (_letRigidbodyMove) return;
-
-            HandleMovement();
-            HandleJump();
 
             base.FixedUpdate();
         }
 
         public void TakeDamage(HitInfo hit)
         {
-            _currentHealth = Mathf.Max(0, _currentHealth - hit.Damage);
-            ApplyKnockback((Vector2)transform.position - hit.Origin, 25);
+            if (_isKnockedOut) return;
+
+            _currentHealth = _currentHealth + hit.Damage;
+
+            float knockbackForce = hit.Damage * Constants.DAMAGE_KNOCKBACK_MULTIPLIER;
+            Vector2 knockbackAngle = (Vector2) Rigidbody.position - hit.Origin;
+            knockbackAngle.y = Mathf.Abs(knockbackAngle.x) * 0.5f;
+
+            if (_currentHealth >= Constants.MIN_KNOCKOUT_THRESHOLD)
+            {
+                float knockoutChance = _currentHealth.MapRange(Constants.MIN_KNOCKOUT_THRESHOLD, Constants.MAX_KNOCKOUT_THRESHOLD, 0f, 1f);
+                if (_currentHealth >= Constants.MAX_KNOCKOUT_THRESHOLD || UnityEngine.Random.Range(0f, 1f) <= knockoutChance)
+                {
+                    // Knocked Out (via offscreen)
+                    knockbackForce = Constants.KNOCKOUT_KNOCKBACK_FORCE;
+                    ApplyKnockback(knockbackAngle, knockbackForce, 1f);
+                }
+                else
+                {
+                    // Increasingly harsh knockbacks
+                    knockbackForce *= (1 + knockoutChance);
+                    ApplyKnockback(knockbackAngle, knockbackForce);
+                }
+                Debug.Log($"{gameObject.name} @ {_currentHealth} knocked back with {knockbackForce} with KO chance {knockoutChance}!");
+                return;
+            }else
+            Debug.Log($"{gameObject.name} @ {_currentHealth} knocked back with {knockbackForce}!");
+            ApplyKnockback(knockbackAngle, knockbackForce);
+        }
+
+        public async void KnockOut()
+        {
+            _isKnockedOut = true;
+
+            _stockCount--;
+            _currentHealth = 0f;
+
+            if (_stockCount > 0)
+            {
+                Debug.Log($"{gameObject.name} is Knocked out! {_stockCount} remaining");
+                await UniTask.Delay(TimeSpan.FromSeconds(2f));
+                Respawn();
+            }
+            else
+            {
+                Debug.Log($"Game Over! {gameObject.name} is out of stock!");
+            }
+        }
+
+        private async void Respawn()
+        {
+            transform.position = Vector3.zero;
+            Rigidbody.Sleep();
+
+            await UniTask.Delay(TimeSpan.FromSeconds(2f));
+
+            Rigidbody.WakeUp();
+            _isKnockedOut = false;
         }
 
         private void HandleGroundCollision()
         {
             int layerMask = LayerMask.GetMask("Ground");
-            _leftGroundDetectionPoint = new Vector2(_collider.bounds.min.x, _collider.bounds.min.y);
-            _rightGroundDetectionPoint = new Vector2(_collider.bounds.max.x, _collider.bounds.min.y);
-            RaycastHit2D leftGroundHit = Physics2D.Raycast(_leftGroundDetectionPoint, Vector2.down, 0.5f, layerMask);
-            RaycastHit2D rightGroundHit = Physics2D.Raycast(_rightGroundDetectionPoint, Vector2.down, 0.5f, layerMask);
-            isGrounded = leftGroundHit || rightGroundHit;
+            var leftGroundDetectionPoint = new Vector2(_collider.bounds.min.x, _collider.bounds.min.y);
+            var rightGroundDetectionPoint = new Vector2(_collider.bounds.max.x, _collider.bounds.min.y);
+            RaycastHit2D leftGroundHit = Physics2D.Raycast(leftGroundDetectionPoint, Vector2.down, 0.5f, layerMask);
+            RaycastHit2D rightGroundHit = Physics2D.Raycast(rightGroundDetectionPoint, Vector2.down, 0.5f, layerMask);
+            IsGrounded = leftGroundHit || rightGroundHit;
         }
-
-        private void HandleMovement()
+        
+        private async void ApplyKnockback(Vector2 dir, float force, float duration = 0.125f)
         {
-            var horizontalInput = _input.GetDirectionalInputVector().x;
-            _rb.velocity = new Vector2(horizontalInput * _movementSpeed, _rb.velocity.y);
-
-            // Turning
-            if (_rb.velocity.x < 0 && transform.localScale.x > 0) transform.localScale = new Vector3(-1, 1, 1);
-            else if (_rb.velocity.x > 0 && transform.localScale.x < 0) transform.localScale = new Vector3(1, 1, 1);
-        }
-
-        private void OnJump()
-        {
-            if (_canJump)
-            {
-                _jumpBuffer = _jumpBufferTime;
-                _startsJumping = true;
-            }
-        }
-
-        private void OnJumpCanceled()
-        {
-            _coyoteTimer = 0f;
-        }
-
-        private void HandleJump()
-        {
-            if (!_canJump) return;
-
-            if (_startsJumping && _jumpBuffer > 0f && _coyoteTimer > 0f)
-            {
-                _startsJumping = false;
-                _jumpBuffer = 0f;
-                
-                _rb.velocity = new Vector2(_rb.velocity.x, 0);
-                _rb.velocity += Vector2.up * _jumpVelocity;
-            }
-
-            if (isGrounded)
-            {
-                _rb.gravityScale = 1f;
-            }
-            else if (_rb.velocity.y < 0f)
-            {
-                _rb.gravityScale = _fallGravity;
-            }
-            else if (_rb.velocity.y > 0f && !_input.HasJumpInput())
-            {
-                _rb.gravityScale = _lowJumpGravity;
-            }
-        }
-
-        private void OnAttack()
-        {
-            // TODO: check state, or better yet, make attack state check itself
-            ChangeState(GameState.Attack.ToString());
-        }
-
-        private void OnBlock()
-        {
-            // Debug.Log("Block");
-        }
-
-        private async void ApplyKnockback(Vector2 dir, float force)
-        {
-            _rb.drag = 5f;
+            Rigidbody.drag = 5f;
             _letRigidbodyMove = true;
 
-            _rb.velocity = Vector2.zero;
-            _rb.AddForce(dir.normalized * force, ForceMode2D.Impulse);
+            Rigidbody.velocity = Vector2.zero;
+            Rigidbody.AddForce(dir.normalized * force, ForceMode2D.Impulse);
 
-            await UniTask.Delay(TimeSpan.FromSeconds(0.125f));
+            await UniTask.Delay(TimeSpan.FromSeconds(duration));
 
-            _rb.drag = 1f;
+            Rigidbody.drag = 1f;
+
+            await UniTask.WaitUntil(() => IsGrounded);
             _letRigidbodyMove = false;
         }
     }
 
-    public enum GameState
+    public enum FighterState
     {
         Idle,
-        Attack,
+        Smash,
+        Charge,
         Block
     }
 }

@@ -9,6 +9,7 @@ namespace TurnBasedRPG
         {
             SignalBusInstaller.Install(Container);
             
+            Container.DeclareSignal<PlayerMovedSignal>();
             Container.DeclareSignal<PlayerDetectedSignal>();
 
             Container.BindInterfacesAndSelfTo<TurnBasedRPGInput>().AsSingle();

@@ -180,7 +180,7 @@ Transform:
   m_GameObject: {fileID: 7992262388654632245}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7992262389494842564}
@@ -271,13 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fighterInput: {fileID: 11400000, guid: 966f5886f0a73b54b8d6c3b5df2faacf, type: 2}
   _collisionBlocker: {fileID: 5412925073677932841}
-  _movementSpeed: 13
-  _jumpVelocity: 43
-  _fallGravity: 1.5
-  _lowJumpGravity: 5
-  _jumpBufferTime: 0.15
-  _coyoteTime: 0.1
-  _maxHealth: 100
+  _data: {fileID: 11400000, guid: db5398906acbc0e4589f8566c8a7e74f, type: 2}
 --- !u!1 &7992262389494842571
 GameObject:
   m_ObjectHideFlags: 0

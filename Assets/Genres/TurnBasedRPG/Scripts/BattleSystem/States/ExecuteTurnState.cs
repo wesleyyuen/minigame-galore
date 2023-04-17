@@ -14,14 +14,9 @@ namespace TurnBasedRPG
         {
             _battleFsm.BattleResult = await _battleFsm.RoundController.StartRound();
 
-            if (_battleFsm.BattleResult == BattleResult.Unresolved)
-            {
-                _battleFsm.ChangeState(BattleStateType.PlayerDecision.ToString());
-            }
-            else
-            {
-                _battleFsm.ChangeState(BattleStateType.ExitBattle.ToString());
-            }
+            _battleFsm.ChangeState(_battleFsm.BattleResult == BattleResult.Unresolved ?
+                                   BattleStateType.PlayerDecision.ToString() :
+                                   BattleStateType.ExitBattle.ToString());
         }
     }
 }

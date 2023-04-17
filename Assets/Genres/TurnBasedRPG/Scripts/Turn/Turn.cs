@@ -33,7 +33,6 @@ namespace TurnBasedRPG
             if (actionPriority == 0)
             {
                 var speedPriority = other.Owner.Stat.Speed.CompareTo(Owner.Stat.Speed);
-                // UnityEngine.Debug.Log($"{Owner.Name}'s {Owner.Stat.Speed} vs {other.Owner.Name}'s {other.Owner.Stat.Speed}");
                 if (speedPriority == 0)
                 {
                     return other.GetHashCode().CompareTo(GetHashCode());

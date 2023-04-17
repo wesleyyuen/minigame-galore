@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using Effectiveness = TurnBasedRPG.Constants.DAMAGE_EFFECTIVENESS;
+using Effectiveness = TurnBasedRPG.DAMAGE_EFFECTIVENESS;
 
 namespace TurnBasedRPG
 {

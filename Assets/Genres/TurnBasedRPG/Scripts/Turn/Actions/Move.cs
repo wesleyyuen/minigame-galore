@@ -6,11 +6,10 @@ namespace TurnBasedRPG
     public abstract class Move : ScriptableObject, ITurnAction
     {
         public string Name => name;
-        [SerializeField] private PokemonType _type;
-        public PokemonType Type => _type;
+        [field: SerializeField] public PokemonType Type {get; private set;}
+        [field: SerializeField, Range(0, 1)] public float Accuracy {get; private set;} = 1f;
+        [field: SerializeField] public int PP {get; private set;} = 15;
         [SerializeField] private bool _isPriorityMove;
-        [SerializeField] private int _pp = 5;
-        public int PP => _pp;
         public int Priority => _isPriorityMove ? Constants.PRIORITY_MOVE_PRIORITY : Constants.ATTACK_MOVE_PRIORITY;
         public abstract UniTask<BattleResult> DoAction(Pokemon owner, Pokemon target);
     }

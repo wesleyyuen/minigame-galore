@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 using Cysharp.Threading.Tasks;
 using TurnBasedRPG.Input;
 
@@ -7,27 +8,41 @@ namespace TurnBasedRPG
     public sealed class OverworldState : MonoState
     {
         private GameStateMachine _fsm;
+        private SignalBus _signalBus;
         private TurnBasedRPGInput _input;
         private WildEncounterController _wildEncounterController;
         private Rigidbody2D _rb;
         private bool _isMoving;
-        private bool _canMove = true;
 
         public OverworldState(
             GameStateMachine stateMachine,
+            SignalBus signalBus,
             TurnBasedRPGInput input,
             WildEncounterController wildEncounterController) : base(GameState.Overworld.ToString(), stateMachine)
         {
             _fsm = stateMachine;
+            _signalBus = signalBus;
             _input = input;
             _wildEncounterController = wildEncounterController;
             _rb = stateMachine.player.gameObject.GetComponent<Rigidbody2D>();
         }
 
+        public override void EnterState(object args = null)
+        {
+            _signalBus.Subscribe<PlayerDetectedSignal>(OnPlayerDetected);
+        }
+
+        private void OnPlayerDetected(PlayerDetectedSignal signal)
+        {
+            _fsm.ChangeState(GameState.PlayerDetected.ToString(), signal.Detector);
+        }
+
         public override async void UpdateState()
         {
-            if (_isMoving || !_canMove) return;
+            if (_isMoving) return;
+
             Vector3 input = _input.GetDirectionalInputVector();
+
             if (input == Vector3.zero) return;
 
             // Prioritized x-axis movements
@@ -46,12 +61,15 @@ namespace TurnBasedRPG
 
             _isMoving = true;
 
-            for (float t = 0f; t < 1f; t += Time.deltaTime / Constants.CHARACTER_MOVEMENT_DURATION) {
+            for (float t = 0f; t < 1f; t += Time.deltaTime / Constants.CHARACTER_MOVEMENT_DURATION)
+            {
                 _rb.position = Vector3.Lerp(from, to, t);
                 await UniTask.NextFrame();
             }
 
             _rb.position = to;
+
+            _signalBus.TryFire(new PlayerMovedSignal(_rb.transform.position));
 
             _isMoving = false;
 
@@ -70,6 +88,11 @@ namespace TurnBasedRPG
         private bool IsWalkable(Vector2 dir)
         {
             return !Physics2D.Raycast(_rb.position, dir, 0.5f, _fsm.unwalkableLayers);
+        }
+
+        public override void ExitState()
+        {
+            _signalBus.Unsubscribe<PlayerDetectedSignal>(OnPlayerDetected);
         }
     }
 }

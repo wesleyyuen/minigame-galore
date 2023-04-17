@@ -1,12 +1,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 [CreateAssetMenu(fileName = "PlayerFighterInput", menuName = "ScriptableObjects/Fighting/FighterInput/PlayerFighterInput")]
 public class PlayerFighterInput : FighterInput, InputMaster.IFightingActions
 {
     private InputMaster _inputMaster;
-    // public event Action Event_Pause;
 
     private void OnEnable()
     {
@@ -52,15 +52,24 @@ public class PlayerFighterInput : FighterInput, InputMaster.IFightingActions
     }
 #endregion
 
-#region Attack
-    public void OnAttack(InputAction.CallbackContext context)
+#region Smash
+    public void OnSmash(InputAction.CallbackContext context)
     {
-        if (context.performed) Attack();
+        if (context.interaction is PressInteraction)
+        {
+            if (context.performed) Smash();
+        }
+        else if (context.interaction is SlowTapInteraction slowTap)
+        {
+            // Canceled will become normal Smash
+            if (context.canceled) ChargeSmash(0f);
+            else if (context.performed) ChargeSmash((float) context.duration);
+        }
     }
 
-    public override bool HasAttackInput()
+    public override bool HasSmashInput()
     {
-        return _inputMaster.Fighting.Attack.ReadValue<float>() > 0.5f;
+        return _inputMaster.Fighting.Smash.ReadValue<float>() > 0.5f;
     }
 #endregion
 
@@ -68,6 +77,7 @@ public class PlayerFighterInput : FighterInput, InputMaster.IFightingActions
     public void OnBlock(InputAction.CallbackContext context)
     {
         if (context.performed) Block();
+        else if (context.canceled) CancelBlock();
     }
 
     public override bool HasBlockInput()
